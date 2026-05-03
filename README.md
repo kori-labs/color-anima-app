@@ -12,25 +12,10 @@ A native macOS app for 2D animation cut editing and color work.
 ## Requirements
 
 - macOS 14 or later
-- Xcode 15 / Swift 5.9 or later
 
 ## Install
 
 Download the latest signed build from the [Releases](../../releases) page.
-
-## Build from source
-
-```sh
-swift package resolve
-swift build
-swift run ColorAnima
-```
-
-Run the test suite:
-
-```sh
-swift test
-```
 
 ## Issues
 
@@ -39,8 +24,9 @@ Avoid attaching credentials, customer material, or other sensitive content.
 
 ## Contributing
 
-External pull requests are not accepted at this time.
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for commercial-licensing inquiries.
+This repository is **source-available, not open-source**. External pull
+requests are not accepted at this time. See [`CONTRIBUTING.md`](CONTRIBUTING.md)
+for commercial-licensing inquiries.
 
 ## License
 
