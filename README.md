@@ -1,54 +1,46 @@
 # Color Anima
 
-Native macOS app and release-intake surface for Color Anima.
+A native macOS app for 2D animation cut editing and color work.
 
-## Overview
+## Features
 
-This repository contains the public macOS app surface, the app-side workspace,
-the app-side engine client, the binary kernel bridge, distribution scripts,
-issue templates, and encrypted binary intake metadata. Production compute is
-delivered through maintainer-controlled release intake; private implementation
-source is not committed here.
+- Project tree and cut editor designed around animation workflows
+- Native macOS UI built with Swift and SwiftUI
+- Designed for fast iteration on shots, cuts, and frames
+- Workspace layout tuned for color and review passes
 
-The tracked `CoreBinary.env` file contains version, tag, asset name, and
-checksum metadata only. The encrypted asset is mirrored through GitHub Releases
-and requires a maintainer-held decryption key before it can be staged under
-ignored `.local-core/`.
+## Requirements
 
-## Build
+- macOS 14 or later
+- Xcode 15 / Swift 5.9 or later
 
-Public app build:
+## Install
+
+Download the latest signed build from the [Releases](../../releases) page.
+
+## Build from source
 
 ```sh
 swift package resolve
 swift build
-swift test
 swift run ColorAnima
 ```
 
-Maintainer intake verification after a mirrored encrypted binary is available:
+Run the test suite:
 
 ```sh
-./scripts/fetch-core-binary.sh
-COLOR_ANIMA_KERNEL_PATH=".local-core/ColorAnimaKernel.xcframework" \
-  ./scripts/verify-core-binary-intake.sh
+swift test
 ```
-
-The intake path activates the `ColorAnimaKernel` SwiftPM binary target only
-through environment variables. App workspace code calls the public
-`ColorAnimaAppEngine` client, which delegates to `ColorAnimaKernelBridge`; no
-source fallback is allowed in this repository.
 
 ## Issues
 
-Use GitHub Issues for bug reports, feature requests, and workflow feedback.
-Do not attach unreleased project files, credentials, customer material, or other
-sensitive material to public issues.
+Please use [GitHub Issues](../../issues) for bug reports and feature requests.
+Avoid attaching credentials, customer material, or other sensitive content.
 
 ## Contributing
 
-External pull requests are not accepted at this time. See
-[`CONTRIBUTING.md`](CONTRIBUTING.md) for commercial-licensing inquiries.
+External pull requests are not accepted at this time.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for commercial-licensing inquiries.
 
 ## License
 
