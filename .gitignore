@@ -1,0 +1,58 @@
+# Build outputs
+.build/
+.swiftpm/
+DerivedData/
+build/
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# SwiftPM
+Package.resolved
+Package.resolved.bak
+
+# macOS
+.DS_Store
+*.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local credentials — must never be committed
+*.pem
+*.p12
+*.cer
+.env
+.env.local
+
+# Local scratch
+.omc/
+.notepad/
+.local-core/
+docs/plans/
+
+# Local app artifacts
+ColorAnima.app/
+*.dmg
+*.zip
+*.xcframework
+*.xcframework.zip
+*.dSYM/
+*.pkg
+dist/
+release/
+reports/
+
+# Logs
+*.log
+
+# Internal migration artifacts (private mirror tracking)
+docs/migration/

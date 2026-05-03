@@ -1,0 +1,103 @@
+import ColorAnimaAppWorkspaceDesignSystem
+import SwiftUI
+
+package struct SubsetStatusRow: View {
+    let model: SubsetStatusEditorModel
+    let deleteResetToken: AnyHashable
+    let editingStatusName: String?
+    @Binding var draftStatusName: String
+    let onSetActiveStatus: (String) -> Void
+    let onStartRename: () -> Void
+    let onCommitRename: () -> Void
+    let onCancelRename: () -> Void
+    let onRemoveStatus: () -> Void
+
+    private var isEditing: Bool {
+        editingStatusName != nil
+    }
+
+    package var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if isEditing {
+                InlineRenameField(
+                    text: $draftStatusName,
+                    placeholder: "Status name",
+                    onCommit: onCommitRename,
+                    onCancel: onCancelRename
+                )
+            } else {
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 10) {
+                        statusPicker
+                        actionButtons
+                    }
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        statusPicker
+                        HStack {
+                            Spacer()
+                            actionButtons
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var statusPicker: some View {
+        Picker(
+            "Status",
+            selection: Binding(
+                get: { model.resolvedActiveStatusName },
+                set: { onSetActiveStatus($0) }
+            )
+        ) {
+            ForEach(model.selectedStatusNames, id: \.self) { statusName in
+                Text(statusName).tag(statusName)
+            }
+        }
+        .pickerStyle(.menu)
+        .labelsHidden()
+    }
+
+    private var actionButtons: some View {
+        HStack(spacing: 8) {
+            Button(action: onStartRename) {
+                Image(systemName: "pencil")
+                    .font(.caption.weight(.semibold))
+                    .frame(width: 14, height: 14)
+            }
+            .buttonStyle(actionButtonStyle)
+            .accessibilityLabel("Rename Status")
+
+            if model.canRemoveActiveStatus {
+                HoverDeleteConfirmButton(
+                    isVisible: true,
+                    resetToken: deleteResetToken,
+                    onConfirm: onRemoveStatus
+                )
+            } else {
+                Button(action: {}) {
+                    Image(systemName: "trash")
+                        .font(.caption.weight(.semibold))
+                        .frame(width: 14, height: 14)
+                }
+                .buttonStyle(actionButtonStyle)
+                .disabled(true)
+                .accessibilityLabel("Delete Status")
+                .accessibilityHint("Cannot delete the last status")
+            }
+        }
+    }
+
+    private var actionButtonStyle: ChromeButtonStyle {
+        ChromeButtonStyle(
+            horizontalPadding: 6,
+            verticalPadding: 5,
+            cornerRadius: 8,
+            font: .caption.weight(.semibold),
+            idleForegroundStyle: WorkspaceFoundation.Foreground.secondaryLabel,
+            hoverForegroundStyle: WorkspaceFoundation.Foreground.primaryLabel
+        )
+    }
+}
