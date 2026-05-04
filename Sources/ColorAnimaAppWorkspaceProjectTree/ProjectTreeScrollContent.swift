@@ -88,6 +88,19 @@ package struct ProjectTreeScrollContent: View {
 
     @ViewBuilder
     private var rootRows: some View {
+        let selection = ProjectTreeRowSelectionContext(
+            selectedNodeID: selectedNodeID,
+            selectedNodeIDs: selectedNodeIDs,
+            selectionAnchorNodeID: selectionAnchorNodeID
+        )
+        let callbacks = ProjectTreeRowCallbacks(
+            onSelectNode: onSelectNode,
+            onMoveTreeNodes: onMoveTreeNodes,
+            onStartRename: onStartRename,
+            onCommitRename: onCommitRename,
+            onCancelRename: onCancelRename,
+            onDeleteNode: onDeleteNode
+        )
         ForEach(Array(rootNode.children.enumerated()), id: \.element.id) { index, child in
             ProjectTreeRow(
                 node: child,
@@ -95,17 +108,10 @@ package struct ProjectTreeScrollContent: View {
                 depth: 0,
                 isLastSibling: index == rootNode.children.count - 1,
                 ancestorContinuationColumns: [],
-                selectedNodeID: selectedNodeID,
-                selectedNodeIDs: selectedNodeIDs,
-                selectionAnchorNodeID: selectionAnchorNodeID,
-                onSelectNode: onSelectNode,
-                onMoveTreeNodes: onMoveTreeNodes,
+                selection: selection,
+                callbacks: callbacks,
                 editingNodeID: editingNodeID,
                 editingNodeName: $editingNodeName,
-                onStartRename: onStartRename,
-                onCommitRename: onCommitRename,
-                onCancelRename: onCancelRename,
-                onDeleteNode: onDeleteNode,
                 collapsedNodeIDs: $collapsedNodeIDs,
                 draggedNodeIDs: $draggedNodeIDs,
                 dropTargetNodeID: $dropTargetNodeID,

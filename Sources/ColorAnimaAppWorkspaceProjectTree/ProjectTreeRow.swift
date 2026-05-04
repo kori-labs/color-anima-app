@@ -8,17 +8,10 @@ struct ProjectTreeRow: View {
     let depth: Int
     let isLastSibling: Bool
     let ancestorContinuationColumns: [Bool]
-    let selectedNodeID: UUID?
-    let selectedNodeIDs: Set<UUID>
-    let selectionAnchorNodeID: UUID?
-    let onSelectNode: (UUID, WorkspaceSelectionModifiers) -> Void
-    let onMoveTreeNodes: ([UUID], UUID, ProjectTreeDropPosition) -> Void
+    let selection: ProjectTreeRowSelectionContext
+    let callbacks: ProjectTreeRowCallbacks
     let editingNodeID: UUID?
     @Binding var editingNodeName: String
-    let onStartRename: (WorkspaceProjectTreeNode) -> Void
-    let onCommitRename: (UUID) -> Void
-    let onCancelRename: () -> Void
-    let onDeleteNode: (UUID) -> Void
     @Binding var collapsedNodeIDs: Set<UUID>
     @Binding var draggedNodeIDs: Set<UUID>
     @Binding var dropTargetNodeID: UUID?
@@ -26,11 +19,8 @@ struct ProjectTreeRow: View {
 
     @State private var isHovered = false
 
-    private let insertionIndicatorThickness: CGFloat = 3
-    private let edgeIndicatorOffset: CGFloat = 5
-
     private var isSelected: Bool {
-        selectedNodeIDs.contains(node.id)
+        selection.selectedNodeIDs.contains(node.id)
     }
 
     private var isEditing: Bool {
@@ -71,36 +61,21 @@ struct ProjectTreeRow: View {
             }
 
             if hasChildren && !isCollapsed {
-                VStack(alignment: .leading, spacing: ProjectTreeSidebarMetrics.childSpacing) {
-                    ForEach(Array(node.children.enumerated()), id: \.element.id) { index, child in
-                        ProjectTreeRow(
-                            node: child,
-                            rootNode: rootNode,
-                            depth: depth + 1,
-                            isLastSibling: index == node.children.count - 1,
-                            ancestorContinuationColumns: ProjectTreeHierarchyMetrics.childContinuationColumns(
-                                ancestorContinuationColumns: ancestorContinuationColumns,
-                                isCurrentNodeLastSibling: isLastSibling
-                            ),
-                            selectedNodeID: selectedNodeID,
-                            selectedNodeIDs: selectedNodeIDs,
-                            selectionAnchorNodeID: selectionAnchorNodeID,
-                            onSelectNode: onSelectNode,
-                            onMoveTreeNodes: onMoveTreeNodes,
-                            editingNodeID: editingNodeID,
-                            editingNodeName: $editingNodeName,
-                            onStartRename: onStartRename,
-                            onCommitRename: onCommitRename,
-                            onCancelRename: onCancelRename,
-                            onDeleteNode: onDeleteNode,
-                            collapsedNodeIDs: $collapsedNodeIDs,
-                            draggedNodeIDs: $draggedNodeIDs,
-                            dropTargetNodeID: $dropTargetNodeID,
-                            dropTargetPosition: $dropTargetPosition
-                        )
-                    }
-                }
-                .padding(.top, 2)
+                ProjectTreeChildrenView(
+                    node: node,
+                    rootNode: rootNode,
+                    depth: depth,
+                    isLastSibling: isLastSibling,
+                    ancestorContinuationColumns: ancestorContinuationColumns,
+                    selection: selection,
+                    callbacks: callbacks,
+                    editingNodeID: editingNodeID,
+                    editingNodeName: $editingNodeName,
+                    collapsedNodeIDs: $collapsedNodeIDs,
+                    draggedNodeIDs: $draggedNodeIDs,
+                    dropTargetNodeID: $dropTargetNodeID,
+                    dropTargetPosition: $dropTargetPosition
+                )
             }
 
             if activeDropPosition == .append {
@@ -111,7 +86,40 @@ struct ProjectTreeRow: View {
 
     @ViewBuilder
     private var nodeCard: some View {
-        let content = HStack(spacing: 10) {
+        if isEditing {
+            nodeCardContent
+        } else {
+            nodeCardContent
+                .simultaneousGesture(
+                    TapGesture(count: 2).onEnded {
+                        callbacks.onStartRename(node)
+                    }
+                )
+                .simultaneousGesture(
+                    TapGesture(count: 1).onEnded {
+                        callbacks.onSelectNode(node.id, ProjectTreeRowState.currentSelectionModifiers())
+                    }
+                )
+                .onDrag {
+                    ProjectTreeRowState.makeDragItemProvider(
+                        node: node,
+                        selectedNodeIDs: selection.selectedNodeIDs,
+                        rootNode: rootNode,
+                        setDraggedNodeIDs: { draggedNodeIDs = $0 }
+                    )
+                }
+                .background {
+                    GeometryReader { proxy in
+                        projectTreeRowDropTarget(
+                            delegate: dropDelegate(rowHeight: proxy.size.height)
+                        )
+                    }
+                }
+        }
+    }
+
+    private var nodeCardContent: some View {
+        HStack(spacing: 10) {
             leadingControl
 
             VStack(alignment: .leading, spacing: 1) {
@@ -119,8 +127,8 @@ struct ProjectTreeRow: View {
                     InlineRenameField(
                         text: $editingNodeName,
                         placeholder: "\(ProjectTreeRowState.title(for: node.kind)) name",
-                        onCommit: { onCommitRename(node.id) },
-                        onCancel: onCancelRename
+                        onCommit: { callbacks.onCommitRename(node.id) },
+                        onCancel: callbacks.onCancelRename
                     )
                 } else {
                     Text(node.name)
@@ -145,8 +153,8 @@ struct ProjectTreeRow: View {
             if isDeletable {
                 HoverDeleteConfirmButton(
                     isVisible: isHovered && !isEditing,
-                    resetToken: selectedNodeID.map(AnyHashable.init),
-                    onConfirm: { onDeleteNode(node.id) }
+                    resetToken: selection.selectedNodeID.map(AnyHashable.init),
+                    onConfirm: { callbacks.onDeleteNode(node.id) }
                 )
             }
         }
@@ -172,49 +180,18 @@ struct ProjectTreeRow: View {
         .overlay(alignment: .top) {
             if activeDropPosition == .before {
                 edgeInsertionIndicator
-                    .offset(y: -edgeIndicatorOffset)
+                    .offset(y: -Self.edgeIndicatorOffset)
             }
         }
         .overlay(alignment: .bottom) {
             if activeDropPosition == .after {
                 edgeInsertionIndicator
-                    .offset(y: edgeIndicatorOffset)
+                    .offset(y: Self.edgeIndicatorOffset)
             }
         }
         .contentShape(.rect)
         .onHover { hovering in
             isHovered = hovering
-        }
-
-        if isEditing {
-            content
-        } else {
-            content
-                .simultaneousGesture(
-                    TapGesture(count: 2).onEnded {
-                        onStartRename(node)
-                    }
-                )
-                .simultaneousGesture(
-                    TapGesture(count: 1).onEnded {
-                        onSelectNode(node.id, ProjectTreeRowState.currentSelectionModifiers())
-                    }
-                )
-                .onDrag {
-                    ProjectTreeRowState.makeDragItemProvider(
-                        node: node,
-                        selectedNodeIDs: selectedNodeIDs,
-                        rootNode: rootNode,
-                        setDraggedNodeIDs: { draggedNodeIDs = $0 }
-                    )
-                }
-                .background {
-                    GeometryReader { proxy in
-                        projectTreeRowDropTarget(
-                            delegate: dropDelegate(rowHeight: proxy.size.height)
-                        )
-                    }
-                }
         }
     }
 
@@ -278,7 +255,7 @@ struct ProjectTreeRow: View {
                 }
             },
             performMove: { nodeIDs, position in
-                onMoveTreeNodes(nodeIDs, node.id, position)
+                callbacks.onMoveTreeNodes(nodeIDs, node.id, position)
             },
             clearDragState: {
                 draggedNodeIDs.removeAll()
@@ -289,9 +266,9 @@ struct ProjectTreeRow: View {
     }
 
     private var edgeInsertionIndicator: some View {
-        RoundedRectangle(cornerRadius: insertionIndicatorThickness / 2, style: .continuous)
+        RoundedRectangle(cornerRadius: Self.insertionIndicatorThickness / 2, style: .continuous)
             .fill(WorkspaceChromeStyle.treeConnectorStroke)
-            .frame(height: insertionIndicatorThickness)
+            .frame(height: Self.insertionIndicatorThickness)
             .shadow(color: WorkspaceChromeStyle.treeConnectorStroke.opacity(0.12), radius: 2, y: 0)
             .allowsHitTesting(false)
     }
@@ -316,11 +293,16 @@ struct ProjectTreeRow: View {
     private func toggleCollapsed() {
         ProjectTreeCollapsePolicy.toggle(
             node: node,
-            selectedNodeIDs: selectedNodeIDs,
+            selectedNodeIDs: selection.selectedNodeIDs,
             collapsedNodeIDs: &collapsedNodeIDs,
             onSelectNode: { nodeID, modifiers in
-                onSelectNode(nodeID, modifiers)
+                callbacks.onSelectNode(nodeID, modifiers)
             }
         )
     }
+
+    // MARK: - Layout constants
+
+    private static let insertionIndicatorThickness: CGFloat = 3
+    private static let edgeIndicatorOffset: CGFloat = 5
 }
