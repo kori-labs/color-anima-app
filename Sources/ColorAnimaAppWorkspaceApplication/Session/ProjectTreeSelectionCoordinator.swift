@@ -305,21 +305,10 @@ public enum ProjectTreeSelectionCoordinator {
 
     public static func pruneStaleCutState(in state: inout ProjectTreeSelectionState) {
         let validCutIDs = Set(state.rootNode.allCutIDs)
-        state.frameSelectionMemory.workspaces = state.frameSelectionMemory.workspaces.filter { cutID, _ in
-            validCutIDs.contains(cutID)
-        }
-        state.frameSelectionMemory.selectedFrameIDByCutID = state.frameSelectionMemory.selectedFrameIDByCutID.filter { cutID, _ in
-            validCutIDs.contains(cutID)
-        }
-        state.frameSelectionMemory.selectedFrameIDsByCutID = state.frameSelectionMemory.selectedFrameIDsByCutID.filter { cutID, _ in
-            validCutIDs.contains(cutID)
-        }
-        state.frameSelectionMemory.frameSelectionAnchorByCutID = state.frameSelectionMemory.frameSelectionAnchorByCutID.filter { cutID, _ in
-            validCutIDs.contains(cutID)
-        }
-        state.frameSelectionMemory.selectedFrameSelectionOrderByCutID = state.frameSelectionMemory.selectedFrameSelectionOrderByCutID.filter { cutID, _ in
-            validCutIDs.contains(cutID)
-        }
+        ProjectFrameSelectionMemoryCoordinator.pruneToValidCutIDs(
+            validCutIDs,
+            in: &state.frameSelectionMemory
+        )
         state.dirtyCutIDs = Set(state.dirtyCutIDs.filter { validCutIDs.contains($0) })
 
         if let activeCutID = state.activeCutID,
@@ -354,50 +343,6 @@ public enum ProjectTreeSelectionCoordinator {
                 in: state.selectedNodeIDs,
                 rootNode: state.rootNode
             ).first
-        }
-
-        for (cutID, selection) in state.frameSelectionMemory.selectedFrameIDsByCutID {
-            let validFrameIDs = Set(
-                state.frameSelectionMemory.workspaces[cutID]?.frameIDsInDisplayOrder ?? []
-            )
-            let filteredSelection = selection.filter { validFrameIDs.contains($0) }
-
-            if filteredSelection.isEmpty {
-                state.frameSelectionMemory.selectedFrameIDsByCutID.removeValue(forKey: cutID)
-                state.frameSelectionMemory.frameSelectionAnchorByCutID.removeValue(forKey: cutID)
-                state.frameSelectionMemory.selectedFrameSelectionOrderByCutID.removeValue(forKey: cutID)
-                continue
-            }
-
-            state.frameSelectionMemory.selectedFrameIDsByCutID[cutID] = filteredSelection
-            if let selectedFrameID = state.frameSelectionMemory.selectedFrameIDByCutID[cutID],
-               filteredSelection.contains(selectedFrameID) == false {
-                state.frameSelectionMemory.selectedFrameIDByCutID[cutID] =
-                    ProjectFrameSelectionMemoryCoordinator.orderedFrameSelectionIDs(
-                        in: filteredSelection,
-                        for: cutID,
-                        in: state.frameSelectionMemory
-                    ).first
-            }
-            if let anchorID = state.frameSelectionMemory.frameSelectionAnchorByCutID[cutID],
-               validFrameIDs.contains(anchorID) == false {
-                state.frameSelectionMemory.frameSelectionAnchorByCutID[cutID] =
-                    ProjectFrameSelectionMemoryCoordinator.orderedFrameSelectionIDs(
-                        in: filteredSelection,
-                        for: cutID,
-                        in: state.frameSelectionMemory
-                    ).first
-            }
-            state.frameSelectionMemory.selectedFrameSelectionOrderByCutID[cutID] =
-                ProjectFrameSelectionMemoryCoordinator.normalizedFrameSelectionOrder(
-                    selection: filteredSelection,
-                    frameIDsInDisplayOrder: ProjectFrameSelectionMemoryCoordinator.orderedFrameIDs(
-                        for: cutID,
-                        in: state.frameSelectionMemory
-                    ),
-                    preferredOrder: state.frameSelectionMemory.selectedFrameSelectionOrderByCutID[cutID],
-                    primaryID: state.frameSelectionMemory.selectedFrameIDByCutID[cutID]
-                )
         }
     }
 
