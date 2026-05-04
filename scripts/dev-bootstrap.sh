@@ -18,6 +18,8 @@ cd "$REPO_ROOT"
 
 XCFRAMEWORK=".local-core/ColorAnimaKernel.xcframework"
 XCFRAMEWORK_ABS="$REPO_ROOT/$XCFRAMEWORK"
+STAGED_VERSION_FILE="$REPO_ROOT/.local-core/.staged-version"
+METADATA_FILE="$REPO_ROOT/CoreBinary.env"
 DO_BUILD=false
 DO_FORCE=false
 
@@ -63,14 +65,33 @@ while [[ $# -gt 0 ]]; do
 done
 
 # ---------------------------------------------------------------------------
-# Step 1: stage kernel if missing or --force
+# Step 1: stage kernel if missing, stale, or --force
+# Stale = staged version mismatches CoreBinary.env's COLOR_ANIMA_KERNEL_VERSION.
 # ---------------------------------------------------------------------------
+expected_version=""
+if [[ -f "$METADATA_FILE" ]]; then
+  expected_version="$(awk -F= '/^COLOR_ANIMA_KERNEL_VERSION=/{print $2}' "$METADATA_FILE")"
+fi
+
+needs_fetch=true
 if [[ -d "$XCFRAMEWORK_ABS" ]] && [[ "$DO_FORCE" != "true" ]]; then
-  log "kernel already staged at $XCFRAMEWORK (use --force to refetch)"
-else
+  staged_version=""
+  [[ -f "$STAGED_VERSION_FILE" ]] && staged_version="$(cat "$STAGED_VERSION_FILE" 2>/dev/null || true)"
+  if [[ -n "$expected_version" ]] && [[ "$staged_version" != "$expected_version" ]]; then
+    log "kernel staged at $staged_version but CoreBinary.env expects $expected_version — refetching"
+  else
+    log "kernel already staged at $XCFRAMEWORK (version $staged_version; --force to refetch)"
+    needs_fetch=false
+  fi
+fi
+
+if [[ "$needs_fetch" == "true" ]]; then
   log "staging kernel binary..."
   if ! "$SCRIPT_DIR/fetch-core-binary.sh"; then
     die "fetch failed; check COLOR_ANIMA_KERNEL_DECRYPTION_KEY env or Keychain entry color-anima-kernel-release-key / kori-labs/color-anima — see AGENTS.md -> Kernel binary intake"
+  fi
+  if [[ -n "$expected_version" ]]; then
+    printf '%s' "$expected_version" > "$STAGED_VERSION_FILE"
   fi
 fi
 
