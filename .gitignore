@@ -37,7 +37,14 @@ Package.resolved.bak
 .omc/
 .notepad/
 .local-core/
-docs/plans/
+.claude/
+.worktrees/
+
+# Plan instances are local-only; canonical templates remain tracked.
+docs/plans/**
+!docs/plans/
+!docs/plans/plan-template.md
+!docs/plans/plan-template-reference.md
 
 # Local app artifacts
 ColorAnima.app/
