@@ -193,35 +193,21 @@ package enum ProjectTreeActionRules {
         in node: WorkspaceProjectTreeNode,
         trail: [WorkspaceProjectTreeNode] = []
     ) -> [WorkspaceProjectTreeNode]? {
-        let nextTrail = trail + [node]
-        if node.id == nodeID {
-            return nextTrail
-        }
-        for child in node.children {
-            if let match = nodePath(for: nodeID, in: child, trail: nextTrail) {
-                return match
-            }
-        }
-        return nil
+        WorkspaceProjectTreeTraversal.treeNodePath(for: nodeID, in: node, trail: trail)
     }
 
     static func treeSelectionKey(
         for nodeID: UUID,
         in rootNode: WorkspaceProjectTreeNode
     ) -> (kind: WorkspaceProjectTreeNodeKind, parentID: UUID?)? {
-        guard let path = nodePath(for: nodeID, in: rootNode),
-              let node = path.last else {
-            return nil
-        }
-
-        return (node.kind, path.dropLast().last?.id)
+        WorkspaceProjectTreeTraversal.treeSelectionKey(for: nodeID, in: rootNode)
     }
 
     static func orderedSelectionIDs(
         _ nodeIDs: Set<UUID>,
         in rootNode: WorkspaceProjectTreeNode
     ) -> [UUID] {
-        flattenNodeIDs(in: rootNode).filter { nodeIDs.contains($0) }
+        WorkspaceProjectTreeTraversal.orderedNodeIDs(nodeIDs, in: rootNode)
     }
 
     static func selectionRange(
@@ -229,34 +215,29 @@ package enum ProjectTreeActionRules {
         to nodeID: UUID,
         in rootNode: WorkspaceProjectTreeNode
     ) -> [UUID]? {
-        guard let anchorKey = treeSelectionKey(for: anchorID, in: rootNode),
-              let nodeKey = treeSelectionKey(for: nodeID, in: rootNode),
-              anchorKey.kind == nodeKey.kind,
-              anchorKey.parentID == nodeKey.parentID else {
-            return nil
-        }
-
-        let siblingIDs: [UUID]
-        switch anchorKey.parentID {
-        case nil:
-            siblingIDs = [rootNode.id]
-        default:
-            guard let parentPath = nodePath(for: anchorID, in: rootNode)?.dropLast(),
-                  let parent = parentPath.last else {
-                return nil
-            }
-            siblingIDs = parent.children.map(\.id)
-        }
-
-        guard let anchorIndex = siblingIDs.firstIndex(of: anchorID),
-              let nodeIndex = siblingIDs.firstIndex(of: nodeID) else {
-            return nil
-        }
-
-        let lower = min(anchorIndex, nodeIndex)
-        let upper = max(anchorIndex, nodeIndex)
-        return Array(siblingIDs[lower...upper])
+        WorkspaceProjectTreeTraversal.selectionRange(from: anchorID, to: nodeID, in: rootNode)
     }
+
+    private struct MoveKey: Hashable {
+        let movingKind: WorkspaceProjectTreeNodeKind
+        let targetKind: WorkspaceProjectTreeNodeKind
+        let position: ProjectTreeDropPosition
+    }
+
+    private static let allowedMoves: Set<MoveKey> = [
+        // sequence -> sequence (before/after only)
+        MoveKey(movingKind: .sequence, targetKind: .sequence, position: .before),
+        MoveKey(movingKind: .sequence, targetKind: .sequence, position: .after),
+        MoveKey(movingKind: .sequence, targetKind: .project, position: .append),
+        // scene
+        MoveKey(movingKind: .scene, targetKind: .sequence, position: .append),
+        MoveKey(movingKind: .scene, targetKind: .scene, position: .before),
+        MoveKey(movingKind: .scene, targetKind: .scene, position: .after),
+        // cut
+        MoveKey(movingKind: .cut, targetKind: .scene, position: .append),
+        MoveKey(movingKind: .cut, targetKind: .cut, position: .before),
+        MoveKey(movingKind: .cut, targetKind: .cut, position: .after),
+    ]
 
     static func canMoveSelection(
         _ nodeIDs: Set<UUID>,
@@ -275,44 +256,9 @@ package enum ProjectTreeActionRules {
 
         guard let targetKey = treeSelectionKey(for: targetNodeID, in: rootNode) else { return false }
 
-        switch movingKey.kind {
-        case .sequence:
-            switch targetKey.kind {
-            case .sequence:
-                return position != .append
-            case .project:
-                return position == .append
-            case .scene, .cut:
-                return false
-            }
-        case .scene:
-            switch targetKey.kind {
-            case .sequence:
-                return position == .append
-            case .scene:
-                return position != .append
-            case .project, .cut:
-                return false
-            }
-        case .cut:
-            switch targetKey.kind {
-            case .scene:
-                return position == .append
-            case .cut:
-                return position != .append
-            case .project, .sequence:
-                return false
-            }
-        case .project:
-            return false
-        }
+        return allowedMoves.contains(
+            MoveKey(movingKind: movingKey.kind, targetKind: targetKey.kind, position: position)
+        )
     }
 
-    private static func flattenNodeIDs(in node: WorkspaceProjectTreeNode) -> [UUID] {
-        var result = [node.id]
-        for child in node.children {
-            result.append(contentsOf: flattenNodeIDs(in: child))
-        }
-        return result
-    }
 }

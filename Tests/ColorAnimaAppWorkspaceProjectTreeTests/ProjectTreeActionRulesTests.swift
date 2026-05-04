@@ -265,6 +265,163 @@ final class ProjectTreeActionRulesTests: XCTestCase {
         )
     }
 
+    func testCanMoveSelectionAllowsCutAppendOntoScene() {
+        let tree = makeSiblingTree()
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.cut.id],
+                to: tree.siblingScene.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+    }
+
+    func testCanMoveSelectionAllowsSequenceAppendOntoProject() {
+        let tree = makeSiblingTree()
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.sequence.id],
+                to: tree.project.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+    }
+
+    func testCanMoveSelectionAllowsSequenceReorderBefore() {
+        let tree = makeSiblingTree()
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.sequence.id],
+                to: tree.siblingSequence.id,
+                position: .before,
+                in: tree.project
+            )
+        )
+    }
+
+    func testCanMoveSelectionAllowsSequenceReorderAfter() {
+        let tree = makeSiblingTree()
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.siblingSequence.id],
+                to: tree.sequence.id,
+                position: .after,
+                in: tree.project
+            )
+        )
+    }
+
+    func testCanMoveSelectionAllowsSceneReorderBeforeAndAfter() {
+        let tree = makeSiblingTree()
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.scene.id],
+                to: tree.childScene.id,
+                position: .before,
+                in: tree.project
+            )
+        )
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.scene.id],
+                to: tree.childScene.id,
+                position: .after,
+                in: tree.project
+            )
+        )
+    }
+
+    func testCanMoveSelectionAllowsCutReorderBeforeAndAfter() {
+        let tree = makeSiblingTree()
+
+        XCTAssertFalse(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.cut.id],
+                to: tree.cut.id,
+                position: .before,
+                in: tree.project
+            )
+        )
+
+        // Build a fresh tree with two cuts under the same scene to verify
+        // before/after reordering of same-parent cuts.
+        let cutA = WorkspaceProjectTreeNode(id: UUID(), kind: .cut, name: "CUT_A")
+        let cutB = WorkspaceProjectTreeNode(id: UUID(), kind: .cut, name: "CUT_B")
+        let scene = WorkspaceProjectTreeNode(id: UUID(), kind: .scene, name: "SC", children: [cutA, cutB])
+        let sequence = WorkspaceProjectTreeNode(id: UUID(), kind: .sequence, name: "SQ", children: [scene])
+        let project = WorkspaceProjectTreeNode(id: UUID(), kind: .project, name: "P", children: [sequence])
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [cutA.id],
+                to: cutB.id,
+                position: .before,
+                in: project
+            )
+        )
+
+        XCTAssertTrue(
+            ProjectTreeActionRules.canMoveSelection(
+                [cutA.id],
+                to: cutB.id,
+                position: .after,
+                in: project
+            )
+        )
+    }
+
+    func testCanMoveSelectionRejectsCrossKindArms() {
+        let tree = makeSiblingTree()
+
+        // cut -> sequence: not allowed in any position
+        XCTAssertFalse(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.cut.id],
+                to: tree.siblingSequence.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+
+        // scene -> cut: not allowed
+        XCTAssertFalse(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.scene.id],
+                to: tree.siblingCut.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+
+        // sequence -> scene: not allowed
+        XCTAssertFalse(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.sequence.id],
+                to: tree.scene.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+
+        // scene -> project: not allowed
+        XCTAssertFalse(
+            ProjectTreeActionRules.canMoveSelection(
+                [tree.scene.id],
+                to: tree.project.id,
+                position: .append,
+                in: tree.project
+            )
+        )
+    }
+
     private func makeTree() -> (project: WorkspaceProjectTreeNode, sequence: WorkspaceProjectTreeNode, scene: WorkspaceProjectTreeNode, cut: WorkspaceProjectTreeNode) {
         let cut = WorkspaceProjectTreeNode(id: UUID(), kind: .cut, name: "CUT001")
         let scene = WorkspaceProjectTreeNode(id: UUID(), kind: .scene, name: "SC001", children: [cut])
