@@ -206,4 +206,64 @@ public enum ProjectFrameSelectionMemoryCoordinator {
     ) -> [UUID] {
         orderedFrameIDs(for: cutID, in: state).filter { selection.contains($0) }
     }
+
+    /// Removes all frame-selection entries for cut IDs absent from `validCutIDs`,
+    /// then repairs per-frame selection, anchor, and order for any remaining cut
+    /// whose frame set has changed.
+    public static func pruneToValidCutIDs(
+        _ validCutIDs: Set<UUID>,
+        in state: inout ProjectFrameSelectionMemoryState
+    ) {
+        state.workspaces = state.workspaces.filter { cutID, _ in
+            validCutIDs.contains(cutID)
+        }
+        state.selectedFrameIDByCutID = state.selectedFrameIDByCutID.filter { cutID, _ in
+            validCutIDs.contains(cutID)
+        }
+        state.selectedFrameIDsByCutID = state.selectedFrameIDsByCutID.filter { cutID, _ in
+            validCutIDs.contains(cutID)
+        }
+        state.frameSelectionAnchorByCutID = state.frameSelectionAnchorByCutID.filter { cutID, _ in
+            validCutIDs.contains(cutID)
+        }
+        state.selectedFrameSelectionOrderByCutID = state.selectedFrameSelectionOrderByCutID.filter { cutID, _ in
+            validCutIDs.contains(cutID)
+        }
+
+        for (cutID, selection) in state.selectedFrameIDsByCutID {
+            let validFrameIDs = Set(state.workspaces[cutID]?.frameIDsInDisplayOrder ?? [])
+            let filteredSelection = selection.filter { validFrameIDs.contains($0) }
+
+            if filteredSelection.isEmpty {
+                state.selectedFrameIDsByCutID.removeValue(forKey: cutID)
+                state.frameSelectionAnchorByCutID.removeValue(forKey: cutID)
+                state.selectedFrameSelectionOrderByCutID.removeValue(forKey: cutID)
+                continue
+            }
+
+            state.selectedFrameIDsByCutID[cutID] = filteredSelection
+            if let selectedFrameID = state.selectedFrameIDByCutID[cutID],
+               filteredSelection.contains(selectedFrameID) == false {
+                state.selectedFrameIDByCutID[cutID] = orderedFrameSelectionIDs(
+                    in: filteredSelection,
+                    for: cutID,
+                    in: state
+                ).first
+            }
+            if let anchorID = state.frameSelectionAnchorByCutID[cutID],
+               validFrameIDs.contains(anchorID) == false {
+                state.frameSelectionAnchorByCutID[cutID] = orderedFrameSelectionIDs(
+                    in: filteredSelection,
+                    for: cutID,
+                    in: state
+                ).first
+            }
+            state.selectedFrameSelectionOrderByCutID[cutID] = normalizedFrameSelectionOrder(
+                selection: filteredSelection,
+                frameIDsInDisplayOrder: orderedFrameIDs(for: cutID, in: state),
+                preferredOrder: state.selectedFrameSelectionOrderByCutID[cutID],
+                primaryID: state.selectedFrameIDByCutID[cutID]
+            )
+        }
+    }
 }

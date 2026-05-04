@@ -144,6 +144,58 @@ final class ProjectFrameSelectionMemoryCoordinatorTests: XCTestCase {
         XCTAssertEqual(ordered, [ids[2], ids[0], ids[1]])
     }
 
+    func testPruneToValidCutIDsDropsRemovedCutAndRepairsSelection() {
+        let cutA = UUID(uuidString: "00000000-0000-0000-0000-0000000A0001")!
+        let cutB = UUID(uuidString: "00000000-0000-0000-0000-0000000B0001")!
+        let ids = makeFrameIDs()
+        let staleID = UUID(uuidString: "00000000-0000-0000-0000-0000DEAD0001")!
+
+        // cutA: frames ids[0], ids[1], ids[2]; staleID is in selection/anchor but not in frameIDsInDisplayOrder
+        let workspaceA = ProjectFrameSelectionMemoryWorkspaceState(
+            frameIDsInDisplayOrder: [ids[0], ids[1], ids[2]]
+        )
+        // cutB: present in all dicts; should be fully removed
+        let workspaceB = ProjectFrameSelectionMemoryWorkspaceState(
+            frameIDsInDisplayOrder: [ids[3]]
+        )
+
+        var state = ProjectFrameSelectionMemoryState(
+            workspaces: [cutA: workspaceA, cutB: workspaceB],
+            selectedFrameIDByCutID: [cutA: staleID, cutB: ids[3]],
+            selectedFrameIDsByCutID: [cutA: [ids[0], staleID], cutB: [ids[3]]],
+            frameSelectionAnchorByCutID: [cutA: staleID, cutB: ids[3]],
+            selectedFrameSelectionOrderByCutID: [cutA: [ids[0], staleID], cutB: [ids[3]]]
+        )
+
+        ProjectFrameSelectionMemoryCoordinator.pruneToValidCutIDs([cutA], in: &state)
+
+        // cutB must be removed from all five dicts
+        XCTAssertNil(state.workspaces[cutB])
+        XCTAssertNil(state.selectedFrameIDByCutID[cutB])
+        XCTAssertNil(state.selectedFrameIDsByCutID[cutB])
+        XCTAssertNil(state.frameSelectionAnchorByCutID[cutB])
+        XCTAssertNil(state.selectedFrameSelectionOrderByCutID[cutB])
+
+        // cutA: stale frame removed from multi-selection
+        XCTAssertEqual(state.selectedFrameIDsByCutID[cutA], [ids[0]])
+
+        // cutA: primary was the stale frame — must be updated to a valid frame
+        let repairedPrimary = state.selectedFrameIDByCutID[cutA]
+        XCTAssertNotNil(repairedPrimary)
+        XCTAssertNotEqual(repairedPrimary, staleID)
+        XCTAssertEqual(repairedPrimary, ids[0])
+
+        // cutA: anchor was the stale frame — must be updated to a valid frame
+        let repairedAnchor = state.frameSelectionAnchorByCutID[cutA]
+        XCTAssertNotNil(repairedAnchor)
+        XCTAssertNotEqual(repairedAnchor, staleID)
+
+        // cutA: order must not contain the stale frame
+        let order = state.selectedFrameSelectionOrderByCutID[cutA]
+        XCTAssertNotNil(order)
+        XCTAssertFalse(order?.contains(staleID) ?? false)
+    }
+
     func testContiguousFrameIDsReturnsNilForMissingEndpoints() {
         let ids = makeFrameIDs()
 
