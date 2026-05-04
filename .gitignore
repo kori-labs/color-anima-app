@@ -43,6 +43,11 @@ Package.resolved.bak
 # Plans are local-only.
 docs/plans/
 
+# AI-assistant guides are local-only by policy. Track via separate
+# intentional commit only if/when public exposure is approved.
+AGENTS.md
+CLAUDE.md
+
 # Local app artifacts
 ColorAnima.app/
 *.dmg
