@@ -40,11 +40,8 @@ Package.resolved.bak
 .claude/
 .worktrees/
 
-# Plan instances are local-only; canonical templates remain tracked.
-docs/plans/**
-!docs/plans/
-!docs/plans/plan-template.md
-!docs/plans/plan-template-reference.md
+# Plans are local-only.
+docs/plans/
 
 # Local app artifacts
 ColorAnima.app/
