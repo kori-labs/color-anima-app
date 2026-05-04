@@ -1,22 +1,24 @@
 import ColorAnimaAppShell
 import SwiftUI
 
-public struct WorkspaceView: View {
+public struct EngineStatusSheet: View {
+    @Binding private var isPresented: Bool
     private let model: WorkspaceModel
     @State private var state: WorkspaceState
 
-    public init(model: WorkspaceModel = WorkspaceModel()) {
+    public init(isPresented: Binding<Bool>, model: WorkspaceModel = WorkspaceModel()) {
+        _isPresented = isPresented
         self.model = model
-        _state = State(initialValue: model.initialState())
+        _state = State(initialValue: model.runStartupCheck())
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(AppShellMetadata.displayName)
-                    .font(.system(size: 30, weight: .semibold))
+                    .font(.system(size: 24, weight: .semibold))
                 Text(AppShellMetadata.repositoryRole)
-                    .font(.system(size: 15))
+                    .font(.system(size: 13))
                     .foregroundStyle(.secondary)
             }
 
@@ -65,9 +67,18 @@ public struct WorkspaceView: View {
             Spacer(minLength: 0)
 
             Text(AppShellMetadata.statusLine)
-                .font(.system(size: 13))
+                .font(.system(size: 12))
                 .foregroundStyle(.secondary)
+
+            HStack {
+                Spacer()
+                Button("Done") {
+                    isPresented = false
+                }
+                .keyboardShortcut(.defaultAction)
+            }
         }
         .padding(28)
+        .frame(minWidth: 520, minHeight: 420)
     }
 }

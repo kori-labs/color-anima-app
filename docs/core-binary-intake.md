@@ -15,7 +15,18 @@ in unavailable mode.
 
 ## Encrypted Release Intake
 
-The supported maintainer flow is:
+For maintainers, the one-step shortcut wraps fetch + verify:
+
+```sh
+bash scripts/dev-bootstrap.sh
+```
+
+It writes `.local-core/.staged-version`, refetches automatically when
+`CoreBinary.env` advances past the staged version, and prints the
+`COLOR_ANIMA_KERNEL_PATH` export to source. Pass `--build` to also run
+`swift build --target ColorAnima` against the staged xcframework.
+
+The underlying maintainer flow is:
 
 1. A maintainer release process builds an audited C-ABI-only
    `ColorAnimaKernel.xcframework.zip`.
@@ -75,13 +86,15 @@ passes.
 
 ## Local Verification
 
-Public app:
+Public app (no kernel staged — produces intake-only build):
 
 ```sh
 swift package describe
-swift build
-swift test
+swift build --target ColorAnima
 ```
+
+Per AGENTS.md, prefer `--target X` and `--filter Y`; full-workspace
+`swift build` / `swift test` is reserved for CI.
 
 With a local maintainer artifact:
 

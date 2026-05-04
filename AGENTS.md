@@ -253,10 +253,13 @@ macOS jobs requires an explicit policy update first.
 This repo follows the same plan-stack convention as the kernel repo.
 
 - Active plans: `docs/plans/active/YYYY-MM-DD-topic/`.
-- Templates: `docs/plans/plan-template.md` (and any sibling templates) — these
-  are tracked.
+- Templates: `docs/plans/plan-template.md` and `docs/plans/plan-template-reference.md`
+  exist locally as canonical references but are **currently gitignored**
+  (`docs/plans/` is excluded wholesale). Tracking the templates requires a
+  separate, intentional `.gitignore` exception PR — verify with
+  `git ls-files docs/plans/` before assuming they ship.
 - Plan **instances** under `docs/plans/active/**` and `docs/plans/done/**` are
-  gitignored. Templates remain visible.
+  gitignored by the same rule and stay local.
 - Parent orchestration docs are numbered (`0-…`, `4-0-…`) with implementation
   detail pushed into numbered child docs (`1-…`, `2-…`, `3-…`).
 

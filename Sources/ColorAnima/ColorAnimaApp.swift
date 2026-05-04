@@ -39,18 +39,51 @@ final class AppActivationDelegate: NSObject, NSApplicationDelegate {
 @main
 struct ColorAnimaApp: App {
     @NSApplicationDelegateAdaptor(AppActivationDelegate.self) private var appActivationDelegate
+    @FocusedValue(\.engineStatusSheetTrigger) private var engineStatusSheetTrigger
 
+    // Frame bumped from 720x420 to 720x480: the new IntakeChrome footer plus
+    // header + card body needs vertical breathing room; 420 felt cramped on
+    // macOS 14 once the alert/Re-check controls render in the offline card.
     var body: some Scene {
         WindowGroup(AppShellMetadata.displayName) {
             PublicShellView()
-                .frame(minWidth: 720, minHeight: 420)
+                .frame(minWidth: 720, minHeight: 480)
         }
         .windowResizability(.contentMinSize)
+        .commands {
+            CommandMenu("Engine") {
+                Button("Engine Status…") {
+                    engineStatusSheetTrigger?()
+                }
+                .keyboardShortcut("e", modifiers: [.command, .shift])
+                .disabled(engineStatusSheetTrigger == nil)
+            }
+        }
     }
 }
 
+// Per-window sheet state. Each WindowGroup-spawned window owns its own
+// `showSheet` flag so the menu command toggles the focused window's sheet
+// only — App-scoped state would propagate to every open window.
 private struct PublicShellView: View {
+    @State private var showSheet = false
+
     var body: some View {
-        WorkspaceView()
+        EngineLinkGate()
+            .sheet(isPresented: $showSheet) {
+                EngineStatusSheet(isPresented: $showSheet)
+            }
+            .focusedValue(\.engineStatusSheetTrigger, { showSheet = true })
+    }
+}
+
+private struct EngineStatusSheetTriggerKey: FocusedValueKey {
+    typealias Value = () -> Void
+}
+
+extension FocusedValues {
+    fileprivate var engineStatusSheetTrigger: EngineStatusSheetTriggerKey.Value? {
+        get { self[EngineStatusSheetTriggerKey.self] }
+        set { self[EngineStatusSheetTriggerKey.self] = newValue }
     }
 }
