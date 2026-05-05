@@ -103,7 +103,7 @@ package struct WorkspaceSelectionSummaryView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(WorkspaceFoundation.Metrics.space3_5)
-        .background(Color.secondary.opacity(0.06))
+        .background(WorkspaceFoundation.Surface.sectionBackground)
         .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius))
     }
 }

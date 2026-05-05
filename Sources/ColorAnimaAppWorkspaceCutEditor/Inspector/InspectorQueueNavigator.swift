@@ -76,7 +76,7 @@ package struct InspectorQueueNavigator: View {
                             .font(.caption2.weight(.semibold))
                             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
                             .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
-                            .background(Color.secondary.opacity(0.12))
+                            .background(WorkspaceFoundation.Surface.rowHighlight)
                             .foregroundStyle(.secondary)
                             .clipShape(.capsule)
                     }
