@@ -119,9 +119,8 @@ private struct ConfidenceFrameRowView: View {
 
             ReviewStateBadgeView(state: row.reviewState)
         }
-        // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7) // TODO: off-grid(7); no token match
+        .padding(.horizontal, WorkspaceFoundation.Metrics.space2_5)
+        .padding(.vertical, WorkspaceFoundation.Metrics.microSpace1_75)
         .background(
             isSelected || isHovered
                 ? Color.accentColor.opacity(isSelected ? 0.15 : 0.07)
@@ -180,7 +179,7 @@ package struct ReviewStateBadgeView: View {
             .font(.caption2.weight(.semibold))
             .foregroundStyle(foregroundColor)
             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
-            .padding(.vertical, 3) // TODO: off-grid(3); no token match
+            .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
             .background(backgroundColor.opacity(0.18), in: Capsule())
             .overlay {
                 Capsule()

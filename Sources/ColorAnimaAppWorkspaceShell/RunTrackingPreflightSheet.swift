@@ -40,7 +40,7 @@ package struct RunTrackingPreflightSheet: View {
                     value: summary.unreviewedSuggestedCorrections
                 )
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, WorkspaceFoundation.Metrics.space1)
 
             HStack {
                 Button("Review Now") {

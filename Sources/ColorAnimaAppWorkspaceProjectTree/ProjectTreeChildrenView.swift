@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 struct ProjectTreeChildrenView: View {
@@ -39,6 +40,6 @@ struct ProjectTreeChildrenView: View {
                 )
             }
         }
-        .padding(.top, 2)
+        .padding(.top, WorkspaceFoundation.Metrics.microSpace0_5)
     }
 }

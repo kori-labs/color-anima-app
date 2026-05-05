@@ -122,10 +122,18 @@ package enum WorkspaceFoundation {
         // 4-pt grid steps
         package static let space1: CGFloat = 4
         package static let space2: CGFloat = 8
+        package static let space2_5: CGFloat = 10
         package static let space3: CGFloat = 12
+        package static let space3_5: CGFloat = 14
         package static let space4: CGFloat = 16
         package static let space5: CGFloat = 20
         package static let space6: CGFloat = 24
+        package static let space7: CGFloat = 28
+
+        // Sub-grid steps (off-grid legacy; preserved for WCAG/density audit — do not promote to 4-pt grid)
+        package static let microSpace0_5: CGFloat = 2   // 2pt micro-gap; used in dense list rows
+        package static let microSpace0_75: CGFloat = 3  // 3pt micro-gap; used in badge vertical insets
+        package static let microSpace1_75: CGFloat = 7  // 7pt micro-gap; used in badge/row horizontal insets
 
         // Backward-compatible aliases (do not remove)
         package static let edgePadding: CGFloat = space5          // was 20; aliased to space5

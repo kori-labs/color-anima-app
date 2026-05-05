@@ -63,8 +63,7 @@ private struct CandidateRegionEntryView: View {
                 reasonTagRow
             }
         }
-        // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
-        .padding(10)
+        .padding(WorkspaceFoundation.Metrics.space2_5)
         .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 
@@ -107,8 +106,8 @@ private struct ReasonCodeTag: View {
         Text(label)
             .font(.caption2.weight(.semibold))
             .foregroundStyle(.secondary)
-            .padding(.horizontal, 7) // TODO: off-grid(7); no token match
-            .padding(.vertical, 3) // TODO: off-grid(3); no token match
+            .padding(.horizontal, WorkspaceFoundation.Metrics.microSpace1_75)
+            .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
             .background(Color.secondary.opacity(0.14), in: Capsule())
             .overlay {
                 Capsule()

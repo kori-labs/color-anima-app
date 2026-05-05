@@ -12,7 +12,7 @@ package struct ProjectTreeEmptyStateCard: View {
                 .font(.callout)
                 .foregroundStyle(WorkspaceChromeStyle.Sidebar.secondaryLabel)
         }
-        .padding(14)
+        .padding(WorkspaceFoundation.Metrics.space3_5)
         .frame(maxWidth: .infinity, alignment: .leading)
         .chromeCard(
             fill: WorkspaceChromeStyle.Sidebar.panelCardFill,

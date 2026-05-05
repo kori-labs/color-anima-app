@@ -56,8 +56,7 @@ package struct WorkspaceSubsetDragPreview: View {
             }
         }
         .padding(.horizontal, WorkspaceFoundation.Metrics.space3)
-        // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
-        .padding(.vertical, 10)
+        .padding(.vertical, WorkspaceFoundation.Metrics.space2_5)
         .chromeCard(
             fill: WorkspaceChromeStyle.Inspector.idleCardFill,
             stroke: WorkspaceChromeStyle.Inspector.selectedCardStroke,

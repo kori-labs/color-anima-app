@@ -68,7 +68,7 @@ private struct ExperimentalCreateFooterSlot: View {
                 .disabled(!actions.isEnabled)
             Spacer(minLength: 0)
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_5)
         .opacity(actions.isEnabled ? 1 : 0.55)
     }
 }
