@@ -17,7 +17,8 @@ public struct EngineStatusSheet: View {
         VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(AppShellMetadata.displayName)
-                    .font(.system(size: 24, weight: .semibold))
+                    .font(WorkspaceFoundation.Typography.displayCardTitle)
+                    .tracking(WorkspaceFoundation.Typography.displayCardTitleTracking)
                 Text(AppShellMetadata.repositoryRole)
                     .font(WorkspaceFoundation.Typography.caption)
                     .foregroundStyle(.secondary)
