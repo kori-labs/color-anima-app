@@ -141,8 +141,8 @@ package struct WorkspaceCommandBarView: View {
                     accessory
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
+            .padding(.horizontal, WorkspaceFoundation.Metrics.space4)
+            .padding(.vertical, WorkspaceFoundation.Metrics.space3)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
         .scrollIndicators(.hidden)

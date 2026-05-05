@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct ProjectSettingsSheet: View {
@@ -83,7 +84,7 @@ package struct ProjectSettingsSheet: View {
                 .disabled(draft.parsedResolution == nil || draft.parsedPlaybackFPS == nil)
             }
         }
-        .padding(24)
+        .padding(WorkspaceFoundation.Metrics.space6)
         .frame(minWidth: 420, minHeight: 320)
         .onAppear {
             DispatchQueue.main.async {

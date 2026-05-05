@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct RunTrackingPreflightSheet: View {
@@ -57,7 +58,7 @@ package struct RunTrackingPreflightSheet: View {
                 .keyboardShortcut(.cancelAction)
             }
         }
-        .padding(24)
+        .padding(WorkspaceFoundation.Metrics.space6)
         .frame(minWidth: 360, idealWidth: 420)
     }
 
