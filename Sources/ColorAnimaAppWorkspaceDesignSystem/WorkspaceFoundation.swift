@@ -84,8 +84,21 @@ package enum WorkspaceFoundation {
     }
 
     package enum Metrics {
-        package static let edgePadding: CGFloat = 20
+        // 4-pt grid steps
+        package static let space1: CGFloat = 4
+        package static let space2: CGFloat = 8
+        package static let space3: CGFloat = 12
+        package static let space4: CGFloat = 16
+        package static let space5: CGFloat = 20
+        package static let space6: CGFloat = 24
+
+        // Backward-compatible aliases (do not remove)
+        package static let edgePadding: CGFloat = space5          // was 20; aliased to space5
+        // Off-grid legacy value; preserved to avoid visual regression.
+        // TODO: snap to space2 in a follow-up after audit confirms the change is acceptable and no regressions.
         package static let compactControlPadding: CGFloat = 6
+
+        // Corner radii (unchanged)
         package static let compactControlCornerRadius: CGFloat = 9
         package static let rowCornerRadius: CGFloat = 12
         package static let cardCornerRadius: CGFloat = 14
