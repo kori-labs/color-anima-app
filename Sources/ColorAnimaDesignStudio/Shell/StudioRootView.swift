@@ -11,7 +11,7 @@ struct StudioRootView: View {
         } content: {
             StudioEditorPanel(model: model)
         } detail: {
-            PreviewPanePlaceholder()
+            ComponentGalleryView(model: model)
         }
         .background(WorkspaceFoundation.Surface.canvas)
         .overlay(alignment: .top) {
