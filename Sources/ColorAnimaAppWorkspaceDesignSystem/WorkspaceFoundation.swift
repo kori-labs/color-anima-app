@@ -87,6 +87,24 @@ package enum WorkspaceFoundation {
         package static let footerButtonHeight: CGFloat = 34
     }
 
+    package enum Typography {
+        /// Body-weight label matching the primary text ramp.
+        package static let primaryLabel: Font = .body
+
+        /// Smaller, supporting text label (callout size).
+        package static let secondaryLabel: Font = .callout
+
+        /// Small annotation text (badges, inline hints).
+        package static let caption: Font = .caption
+
+        /// Section headers — heavier than caption, lighter than body.
+        package static let sectionHeader: Font = .subheadline.weight(.semibold)
+
+        /// Fixed-width numeric font for frame numbers, timecodes, and counters.
+        /// Uses `.monospacedDigit()` so digit widths are stable across value changes.
+        package static let metaNumeric: Font = .caption.monospacedDigit()
+    }
+
     package enum Shell {
         private static let darkWorkspaceNeutral = NSColor(
             calibratedRed: 0.094,
