@@ -30,12 +30,12 @@ package struct InlineRenameField: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 5)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius)
                     .fill(Color(nsColor: .textBackgroundColor).opacity(0.92))
             )
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(Color.accentColor.opacity(0.75), lineWidth: 1)
+                RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius)
+                    .strokeBorder(WorkspaceFoundation.Selection.selectionAccent, lineWidth: 1)
             }
             .overlay {
                 ClickOutsideMonitor {
