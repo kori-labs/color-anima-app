@@ -49,6 +49,12 @@ package enum WorkspaceFoundation {
         package static var destructiveHoverStroke: Color {
             Color(nsColor: .systemRed).opacity(0.42)
         }
+
+        /// Stroke color for focus rings on text-input controls (e.g. InlineRenameField).
+        /// Lower-opacity variant of selection accent so the ring reads as focus, not selection.
+        package static var focusRingStroke: Color {
+            Color.accentColor.opacity(0.75)
+        }
     }
 
     package enum Selection {
