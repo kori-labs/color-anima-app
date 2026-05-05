@@ -32,7 +32,7 @@ public struct ExtractionApplyReport: Equatable, Sendable {
     public let totalRegionCount: Int
     /// Total fill candidates across all frames.
     public let totalAdditionalRegionCount: Int
-    /// Whether the kernel executed the pass (false when running in stub/unavailable mode).
+    /// Whether the kernel executed the pass (false when running in unavailable mode).
     public let kernelExecuted: Bool
 
     public init(
@@ -82,9 +82,9 @@ public struct ExtractionClientRequest: Equatable, Sendable {
 /// Wraps ExtractionBridge and translates between public app DTOs and Bridge DTOs.
 /// Callers never interact with Bridge types directly.
 ///
-/// When the kernel binary is not linked (or the C-ABI extraction function is not
-/// yet exposed), run() returns a zero-count report with kernelExecuted = false —
-/// allowing callers to fall back gracefully.
+/// When the kernel binary is not linked or the activation call cannot execute,
+/// run() returns a zero-count report with kernelExecuted = false, allowing
+/// callers to fall back gracefully.
 public struct ExtractionClient: Sendable {
     private let bridge: ExtractionBridge
 
@@ -93,7 +93,6 @@ public struct ExtractionClient: Sendable {
     }
 
     /// Whether the underlying kernel function is available.
-    /// Currently always false (stub; see ExtractionBridge.swift for follow-up notes).
     public var isAvailable: Bool {
         bridge.isExtractionAvailable
     }
@@ -101,8 +100,8 @@ public struct ExtractionClient: Sendable {
     /// Runs an extraction pass and returns an apply report.
     ///
     /// Returns a zero-count report with kernelExecuted = false when the kernel
-    /// C function is not yet exposed. The coordinator layer uses this to fall
-    /// back to the Swift-only path without crashing.
+    /// activation call is unavailable. The coordinator layer uses this to fall
+    /// back without crashing.
     public func run(request: ExtractionClientRequest) -> ExtractionApplyReport {
         let bridgeRequest = ExtractionRequest(
             frames: request.frames.map {

@@ -8,14 +8,12 @@ final class ExtractionBridgeTests: XCTestCase {
 
     func testBridgeAvailabilityReflectsKernelSurface() {
         let bridge = ExtractionBridge()
-        // The extraction C function is not yet exposed in the kernel surface
-        // (stub state). Availability must be false until the core repo adds
-        XCTAssertFalse(bridge.isExtractionAvailable)
+        XCTAssertEqual(bridge.isExtractionAvailable, KernelBridge().status.isLinked)
     }
 
-    // MARK: - Result path: .unavailable fallback
+    // MARK: - Result paths
 
-    func testRunReturnsUnavailableWhenKernelFunctionNotExposed() {
+    func testRunReturnsUnavailableForEmptyRequest() {
         let bridge = ExtractionBridge()
         let request = ExtractionRequest(
             frames: [],
@@ -27,11 +25,11 @@ final class ExtractionBridgeTests: XCTestCase {
         case .failure(let error):
             XCTAssertEqual(error, .unavailable)
         case .success:
-            XCTFail("Expected .failure(.unavailable) while kernel C function is not exposed")
+            XCTFail("Expected .failure(.unavailable) for empty request")
         }
     }
 
-    func testRunReturnsUnavailableForNonEmptyRequest() {
+    func testRunUsesKernelWhenLinkedForNonEmptyRequest() {
         let bridge = ExtractionBridge()
         let frameIDs = (0 ..< 6).map { _ in UUID() }
         let frames = frameIDs.enumerated().map { index, id in
@@ -43,11 +41,21 @@ final class ExtractionBridgeTests: XCTestCase {
             canvasHeight: 1024
         )
         let result = bridge.run(request: request)
-        guard case .failure(let error) = result else {
-            XCTFail("Expected .failure(.unavailable)")
-            return
+        if bridge.isExtractionAvailable {
+            guard case .success(let output) = result else {
+                XCTFail("Expected success when kernel is linked")
+                return
+            }
+            XCTAssertEqual(output.frameResults.count, frames.count)
+            XCTAssertEqual(output.totalRegionCount, 0)
+            XCTAssertEqual(output.totalAdditionalRegionCount, 0)
+        } else {
+            guard case .failure(let error) = result else {
+                XCTFail("Expected .failure(.unavailable)")
+                return
+            }
+            XCTAssertEqual(error, .unavailable)
         }
-        XCTAssertEqual(error, .unavailable)
     }
 
     // MARK: - DTO construction

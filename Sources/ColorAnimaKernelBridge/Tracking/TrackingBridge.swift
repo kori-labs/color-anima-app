@@ -1,14 +1,11 @@
 // TrackingBridge.swift
 // Layer: ColorAnimaKernelBridge — Bridge entrypoints only. No app-side logic.
 //
-// Kernel C surface investigation result:
-//   Only ca_pipeline_version() is currently exposed by the kernel binary.
-//   Tracking bridge is therefore a documented stub returning
-//   (or equivalent) C function.
-//
-//   kernel xcframework header, then wire this Bridge to it. The DTO
-//   shapes below are forward-compatible: once the C function is available
-//   the #if canImport block is the only change needed.
+// Kernel C surface:
+//   ca_engine_run_a is the public activation entry used for full-cut tracking
+//   requests. The current public DTO carries frame identity/window metadata; it
+//   does not yet carry region payloads, so the adapter sends empty region sets
+//   and reports the neutral result counts returned by the kernel.
 //
 //   1. Public DTOs only — names scoped to Bridge target (Tracking* prefix).
 //   2. Opaque handles — kernel-resident state as OpaquePointer-backed handle.
@@ -127,28 +124,46 @@ public struct TrackingBridge: Sendable {
     /// Runs a tracking pass via the kernel C ABI.
     ///
     /// Returns `.failure(.unavailable)` when the kernel binary is not linked
-    /// or when no C-ABI tracking function has been exposed yet.
-    ///
-    /// - Note: Kernel C surface investigation (2026-05-03): only
-    ///   ca_pipeline_version() is currently exposed. This method returns
-    ///   kernel xcframework header. Follow-up required in core repo.
+    /// or the neutral activation request cannot be executed.
     public func run(
         request: TrackingRequest
     ) -> Result<TrackingResult, KernelBridgeError> {
         #if canImport(ColorAnimaKernel)
-        // Return .unavailable so the AppEngine layer can fall back gracefully.
-        // Replace this stub with the real FFI call once the core repo exposes it.
-        return .failure(.unavailable)
+        guard let result = KernelActivationWire.runFullPropagation(
+            frames: request.frames,
+            keyFrameIDs: request.keyFrameIDs,
+            canvasWidth: request.canvasWidth,
+            canvasHeight: request.canvasHeight
+        ) else {
+            return .failure(.unavailable)
+        }
+        let frameResults = Dictionary(
+            uniqueKeysWithValues: result.frameResults.map {
+                (
+                    $0.frameID,
+                    TrackingFrameResult(
+                        frameID: $0.frameID,
+                        resolvedCorrespondenceCount: $0.correspondenceCount
+                    )
+                )
+            }
+        )
+        return .success(
+            TrackingResult(
+                frameResults: frameResults,
+                totalResolvedCount: result.totalCorrespondenceCount,
+                completed: result.completed
+            )
+        )
         #else
         return .failure(.unavailable)
         #endif
     }
 
-    /// Returns whether the kernel binary is linked and exposes the tracking
-    /// C function. Currently always false (stub; see run()).
+    /// Returns whether the kernel binary is linked and exposes the tracking C entry.
     public var isTrackingAvailable: Bool {
         #if canImport(ColorAnimaKernel)
-        return false
+        return true
         #else
         return false
         #endif

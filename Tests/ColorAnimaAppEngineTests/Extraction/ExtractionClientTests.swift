@@ -6,9 +6,9 @@ final class ExtractionClientTests: XCTestCase {
 
     // MARK: - Availability
 
-    func testClientIsUnavailableWhileKernelFunctionNotExposed() {
+    func testClientAvailabilityReflectsKernelTarget() {
         let client = ExtractionClient()
-        XCTAssertFalse(client.isAvailable)
+        XCTAssertEqual(client.isAvailable, kernelTargetRequested)
     }
 
     // MARK: - run returns zero-count report when unavailable
@@ -23,13 +23,13 @@ final class ExtractionClientTests: XCTestCase {
         XCTAssertTrue(report.frameReports.isEmpty)
     }
 
-    func testRunWithNonEmptyFramesReturnsUnavailableReport() {
+    func testRunWithNonEmptyFramesUsesKernelWhenAvailable() {
         let client = ExtractionClient()
         let request = makeRequest(frameCount: 6)
         let report = client.run(request: request)
-        XCTAssertFalse(report.kernelExecuted)
+        XCTAssertEqual(report.kernelExecuted, client.isAvailable)
         XCTAssertEqual(report.totalRegionCount, 0)
-        XCTAssertTrue(report.frameReports.isEmpty)
+        XCTAssertEqual(report.frameReports.count, client.isAvailable ? 6 : 0)
     }
 
     // MARK: - feedbackMessage
@@ -97,6 +97,12 @@ final class ExtractionClientTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    private var kernelTargetRequested: Bool {
+        let environment = ProcessInfo.processInfo.environment
+        return environment["COLOR_ANIMA_KERNEL_PATH"] != nil ||
+            environment["COLOR_ANIMA_KERNEL_URL"] != nil
+    }
 
     private func makeRequest(
         frameCount: Int,
