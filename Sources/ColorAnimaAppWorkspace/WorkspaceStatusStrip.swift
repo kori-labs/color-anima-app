@@ -32,7 +32,7 @@ struct WorkspaceStatusStrip: View {
                 pill(primary: "\(feedback.actionLabel) - Cancelled", secondary: nil, showSpinner: false, accent: .secondary)
             }
         }
-        .padding(.top, 12)
+        .padding(.top, WorkspaceFoundation.Metrics.space3)
         .frame(maxWidth: .infinity, alignment: .top)
         .allowsHitTesting(false)
     }
@@ -40,7 +40,7 @@ struct WorkspaceStatusStrip: View {
 
 private extension WorkspaceStatusStrip {
     func pill(primary: String, secondary: String?, showSpinner: Bool, accent: Color) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2) {
             if showSpinner {
                 ProgressView()
                     .controlSize(.small)
@@ -48,7 +48,7 @@ private extension WorkspaceStatusStrip {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(primary)
-                    .font(.caption.weight(.medium))
+                    .font(WorkspaceFoundation.Typography.caption.weight(.medium))
                     .foregroundStyle(.primary)
                 if let secondary, secondary.isEmpty == false {
                     Text(secondary)
@@ -57,8 +57,8 @@ private extension WorkspaceStatusStrip {
                 }
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
+        .padding(.horizontal, WorkspaceFoundation.Metrics.space3)
+        .padding(.vertical, 6) // TODO: off-grid (6pt); no nearby Metrics token — snap to space1=4 or space2=8 after visual review
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             Capsule()
