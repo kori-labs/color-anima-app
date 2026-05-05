@@ -91,7 +91,7 @@ package enum WorkspaceFoundation {
         /// Body-weight label matching the primary text ramp.
         package static let primaryLabel: Font = .body
 
-        /// Reduced-weight label for supporting or secondary text.
+        /// Smaller, supporting text label (callout size).
         package static let secondaryLabel: Font = .callout
 
         /// Small annotation text (badges, inline hints).
