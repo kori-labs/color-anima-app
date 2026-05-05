@@ -1,4 +1,5 @@
 import ColorAnimaAppShell
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 public struct EngineStatusSheet: View {
@@ -16,9 +17,10 @@ public struct EngineStatusSheet: View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(AppShellMetadata.displayName)
+                    // TODO: design-system Phase 0 follow-up — no display-size token yet (24pt semibold)
                     .font(.system(size: 24, weight: .semibold))
                 Text(AppShellMetadata.repositoryRole)
-                    .font(.system(size: 13))
+                    .font(WorkspaceFoundation.Typography.caption)
                     .foregroundStyle(.secondary)
             }
 
@@ -30,9 +32,9 @@ public struct EngineStatusSheet: View {
                         state.engineStatus.title,
                         systemImage: state.engineStatus.kernelLinked ? "checkmark.seal" : "xmark.seal"
                     )
-                    .font(.system(size: 15, weight: .medium))
+                    .font(WorkspaceFoundation.Typography.sectionHeader)
                     Text(state.engineStatus.detail)
-                        .font(.system(size: 13))
+                        .font(WorkspaceFoundation.Typography.caption)
                         .foregroundStyle(.secondary)
                 }
 
@@ -47,7 +49,7 @@ public struct EngineStatusSheet: View {
             }
 
             Text(state.checkDetail)
-                .font(.system(size: 13))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
             Divider()
@@ -56,9 +58,9 @@ public struct EngineStatusSheet: View {
                 ForEach(state.operationalSurfaces, id: \.name) { surface in
                     GridRow {
                         Text(surface.name)
-                            .font(.system(size: 13, weight: .medium))
+                            .font(WorkspaceFoundation.Typography.sectionHeader)
                         Text(surface.state)
-                            .font(.system(size: 13))
+                            .font(WorkspaceFoundation.Typography.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -67,7 +69,7 @@ public struct EngineStatusSheet: View {
             Spacer(minLength: 0)
 
             Text(AppShellMetadata.statusLine)
-                .font(.system(size: 12))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
             HStack {
@@ -78,6 +80,7 @@ public struct EngineStatusSheet: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
+        // TODO(design-system): off-grid 28pt padding; consider adding Metrics.space7=28 in a Phase 0 follow-up.
         .padding(28)
         .frame(minWidth: 520, minHeight: 420)
     }
