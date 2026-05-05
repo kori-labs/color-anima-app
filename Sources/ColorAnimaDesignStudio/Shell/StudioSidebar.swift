@@ -1,15 +1,25 @@
-import SwiftUI
 import ColorAnimaAppWorkspaceDesignSystem
+import SwiftUI
 
-/// Sidebar listing the four token categories.
+/// Sidebar listing token categories and the integrated preview entry.
 struct StudioSidebar: View {
-    @Binding var selectedCategory: TokenCategory
+    @Binding var selectedSection: StudioSidebarSection
 
     var body: some View {
-        List(TokenCategory.allCases, selection: $selectedCategory) { category in
-            Text(category.rawValue)
-                .font(WorkspaceFoundation.Typography.primaryLabel)
-                .tag(category)
+        List(selection: $selectedSection) {
+            Section("Design Tokens") {
+                ForEach(TokenCategory.allCases) { category in
+                    Text(category.rawValue)
+                        .font(WorkspaceFoundation.Typography.primaryLabel)
+                        .tag(StudioSidebarSection.tokenCategory(category))
+                }
+            }
+
+            Section("Screens") {
+                Text("Integrated Previews")
+                    .font(WorkspaceFoundation.Typography.primaryLabel)
+                    .tag(StudioSidebarSection.integratedPreviews)
+            }
         }
         .listStyle(.sidebar)
         .frame(minWidth: 160, idealWidth: 180)

@@ -7,7 +7,7 @@ struct StudioRootView: View {
 
     var body: some View {
         NavigationSplitView {
-            StudioSidebar(selectedCategory: $model.selectedCategory)
+            StudioSidebar(selectedSection: $model.selectedSection)
         } content: {
             StudioEditorPanel(model: model)
         } detail: {
