@@ -48,7 +48,7 @@ package struct WorkspaceSelectionSummaryView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(24)
+        .padding(WorkspaceFoundation.Metrics.space6)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
@@ -102,8 +102,9 @@ package struct WorkspaceSelectionSummaryView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        // TODO: off-grid padding (14); no exact Metrics token — review in follow-up
         .padding(14)
         .background(Color.secondary.opacity(0.06))
-        .clipShape(.rect(cornerRadius: 14))
+        .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius))
     }
 }

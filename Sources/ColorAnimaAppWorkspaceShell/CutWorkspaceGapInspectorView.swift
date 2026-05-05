@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct CutWorkspaceGapInspectorView: View {
@@ -32,7 +33,7 @@ package struct CutWorkspaceGapInspectorView: View {
             evidenceBlock
             actionRow
         }
-        .padding(16)
+        .padding(WorkspaceFoundation.Metrics.space4)
         .frame(minWidth: 280)
     }
 
