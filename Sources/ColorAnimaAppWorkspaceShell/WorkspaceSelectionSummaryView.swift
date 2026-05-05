@@ -105,6 +105,6 @@ package struct WorkspaceSelectionSummaryView: View {
         // TODO: off-grid padding (14); no exact Metrics token — review in follow-up
         .padding(14)
         .background(Color.secondary.opacity(0.06))
-        .clipShape(.rect(cornerRadius: 14))
+        .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius))
     }
 }
