@@ -16,7 +16,7 @@ package enum WorkspaceFoundation {
         package static var canvas: Color {
             WorkspaceFoundation.dynamicColor(
                 light: NSColor(calibratedWhite: 0.97, alpha: 1),
-                dark: NSColor(calibratedRed: 0.10, green: 0.11, blue: 0.13, alpha: 1)
+                dark: NSColor(calibratedRed: 0.12, green: 0.13, blue: 0.15, alpha: 1)
             )
         }
 
