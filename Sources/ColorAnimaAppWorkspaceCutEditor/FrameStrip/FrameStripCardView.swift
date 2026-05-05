@@ -64,14 +64,14 @@ package struct FrameStripCardView: View {
                 .frame(height: 84, alignment: .topLeading)
                 .background(tileFill)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius, style: .continuous)
                         .strokeBorder(tileStroke, lineWidth: item.isCurrent ? 2 : 1)
                 }
-                .clipShape(.rect(cornerRadius: 16))
+                .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius))
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
-            .contentShape(.rect(cornerRadius: 16))
+            .contentShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius))
             .onDrag {
                 let draggedIDs = dragSelectionIDs
                 if item.isSelected == false {
@@ -131,7 +131,7 @@ private extension FrameStripCardView {
             .font(.caption2.weight(.semibold))
             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
             .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
-            .background(tint.opacity(0.12))
+            .background(tint.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity))
             .foregroundStyle(tint)
             .clipShape(.capsule)
             .lineLimit(1)
@@ -152,7 +152,7 @@ private extension FrameStripCardView {
             ChromeButtonStyle(
                 horizontalPadding: 0,
                 verticalPadding: 0,
-                cornerRadius: 10,
+                cornerRadius: WorkspaceFoundation.Metrics.footerButtonCornerRadius,
                 idleForegroundStyle: WorkspaceChromeStyle.treeMetaLabel,
                 hoverForegroundStyle: WorkspaceChromeStyle.selectionStroke
             )
@@ -188,7 +188,7 @@ private extension FrameStripCardView {
                 .lineLimit(1)
         }
         .padding(.horizontal, WorkspaceFoundation.Metrics.space2)
-        .padding(.vertical, 5) // EXCEPTION: 5pt micro-gap used once for badge vertical inset; no matching token (space1=4, space2_5=10 are too far apart)
+        .padding(.vertical, WorkspaceFoundation.Metrics.microSpace1_25)
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             Capsule()
@@ -203,7 +203,7 @@ private extension FrameStripCardView {
             return WorkspaceChromeStyle.treeRowSelectedFill
         }
         if item.isSelected {
-            return WorkspaceChromeStyle.treeRowSelectedFill.opacity(0.58)
+            return WorkspaceChromeStyle.treeRowSelectedFill.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
         }
         if isHovered {
             return WorkspaceChromeStyle.treeRowHoverFill

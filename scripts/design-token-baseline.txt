@@ -1,1 +1,0 @@
-Sources/ColorAnimaAppWorkspaceCutEditor/FrameStrip/FrameStripCardView.swift	1

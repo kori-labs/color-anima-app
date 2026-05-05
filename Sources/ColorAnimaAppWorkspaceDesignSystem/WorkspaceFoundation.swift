@@ -148,6 +148,7 @@ package enum WorkspaceFoundation {
         // Sub-grid steps (off-grid legacy; preserved for WCAG/density audit — do not promote to 4-pt grid)
         package static let microSpace0_5: CGFloat = 2   // 2pt micro-gap; used in dense list rows
         package static let microSpace0_75: CGFloat = 3  // 3pt micro-gap; used in badge vertical insets
+        package static let microSpace1_25: CGFloat = 5  // 5pt micro-gap; used in pill/capsule badge vertical insets
         package static let microSpace1_75: CGFloat = 7  // 7pt micro-gap; used in badge/row horizontal insets
 
         // Backward-compatible aliases (do not remove)
@@ -160,8 +161,13 @@ package enum WorkspaceFoundation {
         package static let compactControlCornerRadius: CGFloat = 9
         package static let rowCornerRadius: CGFloat = 12
         package static let cardCornerRadius: CGFloat = 14
+        package static let frameCardCornerRadius: CGFloat = 16
         package static let footerButtonCornerRadius: CGFloat = 10
         package static let footerButtonHeight: CGFloat = 34
+
+        // Opacity steps for tint-driven fills (kept as Double — SwiftUI .opacity expects Double).
+        package static let badgeTintOpacity: Double = 0.12
+        package static let dimSelectionOpacity: Double = 0.58
     }
 
     package enum Typography {
