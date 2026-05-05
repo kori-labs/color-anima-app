@@ -137,7 +137,6 @@ private struct ChromeButton: View {
                     .strokeBorder(borderStyle, lineWidth: 1)
             }
             .clipShape(.rect(cornerRadius: style.cornerRadius))
-            .opacity(isEnabled ? 1 : 0.55)
             .scaleEffect(configuration.isPressed ? 0.985 : 1)
             .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
             .animation(.easeOut(duration: 0.12), value: isHovered)
@@ -172,7 +171,7 @@ private struct ChromeButton: View {
     }
 
     private var foregroundStyle: Color {
-        guard isEnabled else { return WorkspaceFoundation.Foreground.secondaryLabel }
+        guard isEnabled else { return WorkspaceFoundation.Foreground.disabledForeground }
         if style.isDestructive && isHovered {
             return WorkspaceFoundation.Foreground.destructiveForeground
         }
