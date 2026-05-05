@@ -38,7 +38,7 @@ package enum WorkspaceChromeAppearance {
     ) -> NSColor {
         var resolved = color
         appearance.performAsCurrentDrawingAppearance {
-            resolved = color.usingColorSpace(.genericRGB) ?? color
+            resolved = color.usingType(.componentBased) ?? color
         }
         return resolved.withAlphaComponent(alpha)
     }
