@@ -618,6 +618,17 @@ extension NSRegularExpression {
 
 // MARK: - runExtraction shim
 
-// We import the extractor's runExtraction function so WriteBackEngine can call it
-// for the WriteBackOperation.apply convenience wrapper.
-import ColorAnimaDesignStudioTokenManifestExtractor
+// We import the extractor core library so WriteBackEngine can call runExtraction.
+import ColorAnimaDesignStudioExtractorCore
+
+// MARK: - WriteBackOperation extraction helper
+
+extension WriteBackOperation {
+    /// Re-extract the current token manifest from source files at `sourcesRoot`.
+    /// `sourcesRoot` must be the directory that contains
+    /// `ColorAnimaAppWorkspaceDesignSystem/` as a direct child.
+    public static func extractManifest(sourcesRoot: URL) throws -> TokenManifest {
+        let data = try runExtraction(sourcesRoot: sourcesRoot)
+        return try JSONDecoder().decode(TokenManifest.self, from: data)
+    }
+}
