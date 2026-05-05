@@ -35,7 +35,7 @@ package struct InlineRenameField: View {
             )
             .overlay {
                 RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius)
-                    .strokeBorder(WorkspaceFoundation.Selection.selectionAccent, lineWidth: 1)
+                    .strokeBorder(WorkspaceFoundation.Stroke.focusRingStroke, lineWidth: 1)
             }
             .overlay {
                 ClickOutsideMonitor {
