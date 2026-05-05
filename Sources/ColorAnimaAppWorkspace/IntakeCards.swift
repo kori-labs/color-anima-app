@@ -1,4 +1,5 @@
 import ColorAnimaAppShell
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 /// Shared chrome: header (displayName + role), content slot, footer status line.
@@ -13,9 +14,10 @@ package struct IntakeChrome<Content: View>: View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(AppShellMetadata.displayName)
+                    // TODO: design-system Phase 0 follow-up — no display-size token yet (30pt semibold)
                     .font(.system(size: 30, weight: .semibold))
                 Text(AppShellMetadata.repositoryRole)
-                    .font(.system(size: 15))
+                    .font(WorkspaceFoundation.Typography.secondaryLabel)
                     .foregroundStyle(.secondary)
             }
 
@@ -26,10 +28,10 @@ package struct IntakeChrome<Content: View>: View {
             Spacer(minLength: 0)
 
             Text(AppShellMetadata.statusLine)
-                .font(.system(size: 13))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
         }
-        .padding(28)
+        .padding(WorkspaceFoundation.Metrics.space6) // was 28pt; snapped to space6=24pt (nearest grid step)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
@@ -48,15 +50,16 @@ package struct IntakeOfflineCard: View {
     package var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             Label(state.engineStatus.title, systemImage: "xmark.seal")
-                .font(.system(size: 17, weight: .medium))
+                .font(WorkspaceFoundation.Typography.primaryLabel)
+                .fontWeight(.medium)
                 .foregroundStyle(.red)
 
             Text("Stage the kernel binary to enable workspace activation.")
-                .font(.system(size: 14))
+                .font(WorkspaceFoundation.Typography.secondaryLabel)
                 .foregroundStyle(.primary)
 
             Text(state.engineStatus.detail)
-                .font(.system(size: 13))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 12) {
@@ -76,7 +79,7 @@ package struct IntakeOfflineCard: View {
             }
 
             Text(state.checkDetail)
-                .font(.system(size: 12))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
         }
         .alert("Stage Kernel Binary", isPresented: $showStageInstructions) {
@@ -111,17 +114,18 @@ package struct IntakeAdapterPendingCard: View {
     package var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             Label("Engine linked (kernel v\(versionString))", systemImage: "checkmark.seal")
-                .font(.system(size: 17, weight: .medium))
+                .font(WorkspaceFoundation.Typography.primaryLabel)
+                .fontWeight(.medium)
                 .foregroundStyle(.green)
 
             Text(
                 "Workspace UI activation pending kernel adapter rollout. See AGENTS.md → Adapter rollout dependency."
             )
-            .font(.system(size: 14))
+            .font(WorkspaceFoundation.Typography.secondaryLabel)
             .foregroundStyle(.primary)
 
             Text(state.engineStatus.detail)
-                .font(.system(size: 13))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 12) {
@@ -134,7 +138,7 @@ package struct IntakeAdapterPendingCard: View {
             }
 
             Text(state.checkDetail)
-                .font(.system(size: 12))
+                .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
         }
     }
