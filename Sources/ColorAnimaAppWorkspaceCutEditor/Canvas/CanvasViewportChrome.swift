@@ -19,7 +19,7 @@ package struct CanvasViewportChrome<Content: View>: View {
 
     package var body: some View {
         ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: 18)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius)
                 .fill(WorkspaceChromeStyle.viewportFill)
 
             CanvasImageBoundsPlate(

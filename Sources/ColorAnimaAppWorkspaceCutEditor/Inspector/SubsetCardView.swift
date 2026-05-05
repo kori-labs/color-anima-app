@@ -85,7 +85,7 @@ package struct SubsetCardView: View {
     }
 
     private var baseCardContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
             SubsetCardHeader(
                 subset: subset,
                 isEditing: isEditing,
@@ -120,8 +120,8 @@ package struct SubsetCardView: View {
         }
         .padding(WorkspaceFoundation.Metrics.space3_5)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .chromeSelectablePanelCard(isActive: isSelected || isHovered, cornerRadius: 16)
-        .contentShape(.rect(cornerRadius: 16))
+        .chromeSelectablePanelCard(isActive: isSelected || isHovered, cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius)
+        .contentShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius))
         .onHover { hovering in
             isHovered = hovering
         }

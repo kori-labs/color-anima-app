@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct SubsetCardSwatchStrip: View {
@@ -15,7 +16,7 @@ package struct SubsetCardSwatchStrip: View {
 
     package var body: some View {
         ScrollView(.horizontal) {
-            HStack(spacing: 12) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space3) {
                 swatchView(
                     kind: .base,
                     title: "Base",

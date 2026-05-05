@@ -25,8 +25,8 @@ package struct InspectorQueueNavigator: View {
 
     package var body: some View {
         if let currentItem = state.currentItem {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
+                HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
                     Text("Review Queue")
                         .font(.headline)
 
@@ -60,13 +60,13 @@ package struct InspectorQueueNavigator: View {
                 Text(title(for: currentItem))
                     .font(.callout.weight(.semibold))
 
-                HStack(spacing: 8) {
+                HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                     ForEach(reasonBadges(for: currentItem), id: \.self) { reasonBadge in
                         Text(reasonBadge)
                             .font(.caption2.weight(.semibold))
                             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
                             .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
-                            .background(severityColor.opacity(0.12))
+                            .background(severityColor.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity))
                             .foregroundStyle(severityColor)
                             .clipShape(.capsule)
                     }
@@ -90,7 +90,7 @@ package struct InspectorQueueNavigator: View {
                     }
                 }
 
-                HStack(spacing: 8) {
+                HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                     Button("Accept") {
                         onAccept(state.currentIndex)
                     }

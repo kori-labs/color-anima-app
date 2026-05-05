@@ -43,12 +43,12 @@ package struct SubsetStatusEditor: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
             Rectangle()
                 .fill(WorkspaceChromeStyle.Inspector.sectionDivider)
                 .frame(height: 1)
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
                 HStack {
                     Text("Status Variants")
                         .font(.caption.weight(.semibold))
@@ -77,7 +77,7 @@ package struct SubsetStatusEditor: View {
                     .fill(WorkspaceChromeStyle.Inspector.sectionDivider)
                     .frame(height: 1)
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
                     Text("Legacy Fill Controls")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
@@ -93,9 +93,9 @@ package struct SubsetStatusEditor: View {
 
     private var statusActionButtonStyle: ChromeButtonStyle {
         ChromeButtonStyle(
-            horizontalPadding: 10,
-            verticalPadding: 6,
-            cornerRadius: 10,
+            horizontalPadding: WorkspaceFoundation.Metrics.space2_5,
+            verticalPadding: WorkspaceFoundation.Metrics.compactControlPadding,
+            cornerRadius: WorkspaceFoundation.Metrics.footerButtonCornerRadius,
             font: .caption.weight(.semibold),
             idleForegroundStyle: WorkspaceFoundation.Foreground.secondaryLabel,
             hoverForegroundStyle: WorkspaceFoundation.Foreground.primaryLabel

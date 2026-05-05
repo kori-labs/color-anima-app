@@ -38,8 +38,8 @@ package struct CanvasPreviewZoomControls: View {
     }
 
     package var body: some View {
-        VStack(alignment: .trailing, spacing: 8) {
-            HStack(spacing: 8) {
+        VStack(alignment: .trailing, spacing: WorkspaceFoundation.Metrics.space2) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                 Button("-") {
                     onZoomOut()
                 }
@@ -68,10 +68,10 @@ package struct CanvasPreviewZoomControls: View {
         .padding(WorkspaceFoundation.Metrics.space2_5)
         .background(WorkspaceChromeStyle.overlayPanelFill)
         .overlay {
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius)
                 .strokeBorder(WorkspaceChromeStyle.overlayPanelStroke, lineWidth: 1)
         }
-        .clipShape(.rect(cornerRadius: 14))
+        .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius))
     }
 }
 

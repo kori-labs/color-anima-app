@@ -11,11 +11,10 @@ package struct IntakeChrome<Content: View>: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text(AppShellMetadata.displayName)
-                    // TODO: design-system Phase 0 follow-up — no display-size token yet (30pt semibold)
-                    .font(.system(size: 30, weight: .semibold))
+                    .geistDisplay(.section)
                 Text(AppShellMetadata.repositoryRole)
                     .font(WorkspaceFoundation.Typography.secondaryLabel)
                     .foregroundStyle(.secondary)
@@ -48,7 +47,7 @@ package struct IntakeOfflineCard: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3_5) {
             Label(state.engineStatus.title, systemImage: "xmark.seal")
                 .font(WorkspaceFoundation.Typography.primaryLabel)
                 .fontWeight(.medium)
@@ -62,7 +61,7 @@ package struct IntakeOfflineCard: View {
                 .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 12) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space3) {
                 Button {
                     onRecheck()
                 } label: {
@@ -112,7 +111,7 @@ package struct IntakeAdapterPendingCard: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3_5) {
             Label("Engine linked (kernel v\(versionString))", systemImage: "checkmark.seal")
                 .font(WorkspaceFoundation.Typography.primaryLabel)
                 .fontWeight(.medium)
@@ -128,7 +127,7 @@ package struct IntakeAdapterPendingCard: View {
                 .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 12) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space3) {
                 Button {
                     onRecheck()
                 } label: {

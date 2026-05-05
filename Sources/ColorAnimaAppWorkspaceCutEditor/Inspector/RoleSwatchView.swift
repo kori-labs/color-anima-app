@@ -39,7 +39,7 @@ package struct RoleSwatchView: View {
     }
 
     package var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: WorkspaceFoundation.Metrics.space2) {
             swatch
                 .frame(maxWidth: .infinity, alignment: .center)
 

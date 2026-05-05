@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct RuleEditorView: View {
@@ -29,7 +30,7 @@ package struct RuleEditorView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
             List {
                 ForEach(ruleSet.rules) { rule in
                     RuleRowView(

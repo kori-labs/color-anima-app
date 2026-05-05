@@ -37,13 +37,13 @@ package struct WorkspaceSubsetDragPreview: View {
     }
 
     package var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space3) {
             Text(model.title)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(WorkspaceFoundation.Foreground.primaryLabel)
                 .lineLimit(1)
 
-            HStack(spacing: 8) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                 ForEach(Array(model.colors.enumerated()), id: \.offset) { _, color in
                     Circle()
                         .fill(color.swiftUIColor)
@@ -60,7 +60,7 @@ package struct WorkspaceSubsetDragPreview: View {
         .chromeCard(
             fill: WorkspaceChromeStyle.Inspector.idleCardFill,
             stroke: WorkspaceChromeStyle.Inspector.selectedCardStroke,
-            cornerRadius: 14
+            cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius
         )
         .fixedSize(horizontal: true, vertical: true)
     }

@@ -32,7 +32,7 @@ package struct CanvasImageBoundsPlate: View {
         }
         .overlay {
             Rectangle()
-                .strokeBorder(WorkspaceChromeStyle.overlayPanelStroke.opacity(0.9), lineWidth: strokeWidth)
+                .strokeBorder(WorkspaceChromeStyle.overlayPanelStroke.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), lineWidth: strokeWidth)
         }
     }
 }

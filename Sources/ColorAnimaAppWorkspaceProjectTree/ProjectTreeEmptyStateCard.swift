@@ -5,7 +5,7 @@ package struct ProjectTreeEmptyStateCard: View {
     package init() {}
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             Text("No sequences yet")
                 .font(.headline)
             Text("Create your first sequence to start structuring the project.")

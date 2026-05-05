@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct CanvasPreviewDropTargetOverlay: View {
@@ -31,7 +32,7 @@ package struct CanvasPreviewDropTargetOverlay: View {
                 ZStack {
                     outlinePath
                         .stroke(
-                            overlayColor.opacity(0.35),
+                            overlayColor.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity),
                             style: StrokeStyle(lineWidth: 6, dash: [8, 6], dashPhase: phase)
                         )
                         .blur(radius: 4)

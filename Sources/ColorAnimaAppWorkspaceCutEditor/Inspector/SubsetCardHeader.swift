@@ -16,7 +16,7 @@ package struct SubsetCardHeader: View {
 
     package var body: some View {
         let content = ViewThatFits(in: .horizontal) {
-            HStack(alignment: .top, spacing: 12) {
+            HStack(alignment: .top, spacing: WorkspaceFoundation.Metrics.space3) {
                 titleBlock
                 Spacer()
 
@@ -25,7 +25,7 @@ package struct SubsetCardHeader: View {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
                 titleBlock
 
                 if !isEditing {
@@ -58,7 +58,7 @@ package struct SubsetCardHeader: View {
 
     @ViewBuilder
     private var titleBlock: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             if isEditing {
                 InlineRenameField(
                     text: $editingSubsetName,

@@ -20,8 +20,8 @@ package struct RunTrackingPreflightSheet: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space4) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text("Color & Gap Review")
                     .font(.title3.bold())
                 Text("Unresolved gap candidates may flow into tracking as false evidence. You can review them now, or run tracking anyway and revisit the candidates afterward.")
@@ -30,7 +30,7 @@ package struct RunTrackingPreflightSheet: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
                 summaryRow(
                     label: "Unresolved gap candidates",
                     value: summary.unresolvedGapCandidates

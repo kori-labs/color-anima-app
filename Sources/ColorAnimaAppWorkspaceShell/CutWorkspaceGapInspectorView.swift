@@ -27,7 +27,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
             header
             statsBlock
             evidenceBlock
@@ -38,7 +38,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             Text("Gap Review")
                 .font(.title3.bold())
             Text(candidate.reviewState.displayTitle)
@@ -48,7 +48,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var statsBlock: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             statsRow(label: "Area", value: "\(candidate.area) px")
             statsRow(label: "Pixel count", value: "\(candidate.pixelCount)")
             statsRow(label: "Confidence", value: String(format: "%.2f", candidate.confidence))
@@ -57,11 +57,11 @@ package struct CutWorkspaceGapInspectorView: View {
 
     @ViewBuilder
     private var evidenceBlock: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             Text("Suggested color")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            HStack(spacing: 8) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                 swatch(for: candidate.suggestedColor)
                 Text(candidate.suggestedColor == nil ? "No suggestion" : "From nearest painted region")
                     .font(.caption)
@@ -71,7 +71,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var actionRow: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2) {
             Button("Apply Suggested", action: onApplySuggested)
                 .disabled(candidate.suggestedColor == nil)
             Button("Pick Color", action: onPickColor)
@@ -98,16 +98,16 @@ package struct CutWorkspaceGapInspectorView: View {
     @ViewBuilder
     private func swatch(for color: RGBAColor?) -> some View {
         if let color {
-            RoundedRectangle(cornerRadius: 4)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                 .fill(Color(red: color.red, green: color.green, blue: color.blue, opacity: color.alpha))
                 .frame(width: 28, height: 18)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(.secondary.opacity(0.5), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
+                        .stroke(.secondary.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), lineWidth: 0.5)
                 )
         } else {
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(.secondary.opacity(0.5), style: StrokeStyle(lineWidth: 0.5, dash: [3, 2]))
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
+                .stroke(.secondary.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), style: StrokeStyle(lineWidth: 0.5, dash: [3, 2]))
                 .frame(width: 28, height: 18)
         }
     }
