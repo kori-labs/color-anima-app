@@ -1,5 +1,6 @@
 import SwiftUI
 import ColorAnimaDesignStudioTokenManifest
+import ColorAnimaDesignStudioPreview
 import ColorAnimaAppWorkspaceDesignSystem
 
 /// Main preview pane. Renders the `ComponentPreviewRegistry` as a vertically

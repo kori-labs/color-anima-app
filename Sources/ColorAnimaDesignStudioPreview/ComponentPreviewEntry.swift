@@ -2,11 +2,12 @@ import SwiftUI
 import ColorAnimaDesignStudioTokenManifest
 
 /// Category grouping for preview entries in the gallery.
-enum ComponentPreviewCategory: String, CaseIterable {
+public enum ComponentPreviewCategory: String, CaseIterable {
     case color = "Color"
     case spacing = "Spacing"
     case typography = "Typography"
     case cornerRadius = "Corner Radius"
+    case primitive = "Primitive"
     case composite = "Composite"
 }
 
@@ -17,9 +18,21 @@ enum ComponentPreviewCategory: String, CaseIterable {
 /// Marked `@MainActor` so the view-producing closure is safe to store in a
 /// static array under Swift 6 strict concurrency.
 @MainActor
-struct ComponentPreviewEntry: Identifiable {
-    let id: String
-    let title: String
-    let category: ComponentPreviewCategory
-    let view: (TokenManifest) -> AnyView
+public struct ComponentPreviewEntry: Identifiable {
+    public let id: String
+    public let title: String
+    public let category: ComponentPreviewCategory
+    public let view: (TokenManifest) -> AnyView
+
+    public init(
+        id: String,
+        title: String,
+        category: ComponentPreviewCategory,
+        view: @escaping (TokenManifest) -> AnyView
+    ) {
+        self.id = id
+        self.title = title
+        self.category = category
+        self.view = view
+    }
 }
