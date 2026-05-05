@@ -36,6 +36,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Design token gate
+        run: sh scripts/scan-design-token-violations.sh
+
       - name: Select Xcode (Swift 6.x toolchain)
         uses: maxim-lobanov/setup-xcode@v1
         with:
