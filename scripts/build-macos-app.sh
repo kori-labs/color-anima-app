@@ -169,6 +169,59 @@ copy_executable() {
     chmod 755 "$MACOS_DIR/$PRODUCT_NAME"
 }
 
+find_runtime_dylib() {
+    local dylib_name="$1"
+    local binary_dir
+
+    binary_dir="$(dirname -- "$BINARY_PATH")"
+
+    if [[ -f "$binary_dir/$dylib_name" ]]; then
+        printf '%s\n' "$binary_dir/$dylib_name"
+        return 0
+    fi
+
+    if [[ -n "${COLOR_ANIMA_KERNEL_PATH:-}" && -d "${COLOR_ANIMA_KERNEL_PATH:-}" ]]; then
+        local found
+        found="$(find "$COLOR_ANIMA_KERNEL_PATH" -name "$dylib_name" -type f -print -quit)"
+        if [[ -n "$found" ]]; then
+            printf '%s\n' "$found"
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+copy_runtime_dylibs() {
+    require_command otool
+
+    local linked_dylibs
+    linked_dylibs="$(
+        otool -L "$BINARY_PATH" \
+            | awk 'index($1, "@rpath/") == 1 && $1 ~ /\.dylib$/ { print $1 }' \
+            | sort -u
+    )"
+
+    if [[ -z "$linked_dylibs" ]]; then
+        return 0
+    fi
+
+    while IFS= read -r dylib_ref; do
+        [[ -n "$dylib_ref" ]] || continue
+
+        local dylib_name
+        local source_path
+        dylib_name="$(basename -- "$dylib_ref")"
+
+        source_path="$(find_runtime_dylib "$dylib_name")" \
+            || die "Linked runtime dylib not found for bundle copy: $dylib_name"
+
+        log_info "Copying runtime dylib: $dylib_name"
+        cp "$source_path" "$MACOS_DIR/$dylib_name"
+        chmod 755 "$MACOS_DIR/$dylib_name"
+    done <<< "$linked_dylibs"
+}
+
 copy_icon_if_present() {
     if [[ -z "$ICON_PATH" ]]; then
         ICON_BASENAME=""
@@ -251,6 +304,7 @@ main() {
     create_bundle_layout
     copy_icon_if_present
     copy_executable
+    copy_runtime_dylibs
     write_info_plist
     sign_bundle
     open_bundle_if_requested
