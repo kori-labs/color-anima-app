@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct InspectorTrackingPanel: View {
@@ -48,7 +49,7 @@ package struct InspectorTrackingPanel: View {
 
                 if state.isTrackingAware {
                     Divider()
-                        .padding(.vertical, 2) // TODO: off-grid(2); no token match
+                        .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_5)
 
                     Toggle("Promote to anchor", isOn: $promoteToAnchor)
                         .font(.caption)

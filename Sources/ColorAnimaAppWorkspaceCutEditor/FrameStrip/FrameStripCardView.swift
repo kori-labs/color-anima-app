@@ -59,8 +59,7 @@ package struct FrameStripCardView: View {
                         Spacer(minLength: 0)
                     }
                 }
-                // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
-                .padding(10)
+                .padding(WorkspaceFoundation.Metrics.space2_5)
                 .frame(width: 148, alignment: .leading)
                 .frame(height: 84, alignment: .topLeading)
                 .background(tileFill)
@@ -86,8 +85,8 @@ package struct FrameStripCardView: View {
 
             if item.showsPersistentReferenceAction {
                 persistentReferenceActionButton
-                    .padding(.horizontal, 10) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
-                    .padding(.bottom, 10) // TODO: off-grid(10)
+                    .padding(.horizontal, WorkspaceFoundation.Metrics.space2_5)
+                    .padding(.bottom, WorkspaceFoundation.Metrics.space2_5)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
 
@@ -131,7 +130,7 @@ private extension FrameStripCardView {
         Text(title)
             .font(.caption2.weight(.semibold))
             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
-            .padding(.vertical, 3) // TODO: off-grid(3); no token match
+            .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
             .background(tint.opacity(0.12))
             .foregroundStyle(tint)
             .clipShape(.capsule)
@@ -189,7 +188,7 @@ private extension FrameStripCardView {
                 .lineLimit(1)
         }
         .padding(.horizontal, WorkspaceFoundation.Metrics.space2)
-        .padding(.vertical, 5) // TODO: off-grid(5); no token match
+        .padding(.vertical, 5) // EXCEPTION: 5pt micro-gap used once for badge vertical inset; no matching token (space1=4, space2_5=10 are too far apart)
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             Capsule()

@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 extension CanvasPreviewView {
@@ -44,7 +45,7 @@ extension CanvasPreviewView {
                     resetViewport()
                 }
             )
-            .padding(14) // TODO: off-grid; snap to space3(12) or space4(16) in follow-up
+            .padding(WorkspaceFoundation.Metrics.space3_5)
         }
     }
 }

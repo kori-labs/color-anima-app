@@ -65,7 +65,7 @@ package struct InspectorQueueNavigator: View {
                         Text(reasonBadge)
                             .font(.caption2.weight(.semibold))
                             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
-                            .padding(.vertical, 3) // TODO: off-grid(3); no token match
+                            .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
                             .background(severityColor.opacity(0.12))
                             .foregroundStyle(severityColor)
                             .clipShape(.capsule)
@@ -75,7 +75,7 @@ package struct InspectorQueueNavigator: View {
                         Text("Manual")
                             .font(.caption2.weight(.semibold))
                             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
-                            .padding(.vertical, 3) // TODO: off-grid(3); no token match
+                            .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
                             .background(Color.secondary.opacity(0.12))
                             .foregroundStyle(.secondary)
                             .clipShape(.capsule)

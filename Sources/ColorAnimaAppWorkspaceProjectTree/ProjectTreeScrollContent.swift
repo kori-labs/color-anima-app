@@ -73,13 +73,13 @@ package struct ProjectTreeScrollContent: View {
             VStack(alignment: .leading, spacing: ProjectTreeSidebarMetrics.treeSpacing) {
                 if state.isEmpty {
                     ProjectTreeEmptyStateCard()
-                        .padding(.top, 2)
+                        .padding(.top, WorkspaceFoundation.Metrics.microSpace0_5)
                 } else {
                     rootRows
                 }
             }
             .padding(.horizontal, ProjectTreeSidebarMetrics.edgePadding)
-            .padding(.top, 4)
+            .padding(.top, WorkspaceFoundation.Metrics.space1)
             .padding(.bottom, ProjectTreeSidebarMetrics.edgePadding)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
