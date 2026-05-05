@@ -21,7 +21,7 @@ package struct ConfidenceTimelineView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
             headerRow
             filterPicker
 
@@ -107,7 +107,7 @@ private struct ConfidenceFrameRowView: View {
     @State private var isHovered = false
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
             Text(row.frameLabel)
                 .font(.caption.monospaced())
                 .foregroundStyle(.secondary)

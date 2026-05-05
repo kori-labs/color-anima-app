@@ -27,12 +27,12 @@ package struct SubsetStatusRow: View {
                 )
             } else {
                 ViewThatFits(in: .horizontal) {
-                    HStack(spacing: 10) {
+                    HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
                         statusPicker
                         actionButtons
                     }
 
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
                         statusPicker
                         HStack {
                             Spacer()

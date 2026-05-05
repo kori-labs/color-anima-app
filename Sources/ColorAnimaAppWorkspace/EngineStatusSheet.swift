@@ -14,11 +14,10 @@ public struct EngineStatusSheet: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(AppShellMetadata.displayName)
-                    // TODO: design-system Phase 0 follow-up — no display-size token yet (24pt semibold)
-                    .font(.system(size: 24, weight: .semibold))
+                    .font(WorkspaceFoundation.Typography.displayCardTitle)
                 Text(AppShellMetadata.repositoryRole)
                     .font(WorkspaceFoundation.Typography.caption)
                     .foregroundStyle(.secondary)
@@ -26,8 +25,8 @@ public struct EngineStatusSheet: View {
 
             Divider()
 
-            HStack(alignment: .top, spacing: 16) {
-                VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: WorkspaceFoundation.Metrics.space4) {
+                VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
                     Label(
                         state.engineStatus.title,
                         systemImage: state.engineStatus.kernelLinked ? "checkmark.seal" : "xmark.seal"
@@ -54,7 +53,7 @@ public struct EngineStatusSheet: View {
 
             Divider()
 
-            Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 10) {
+            Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: WorkspaceFoundation.Metrics.space2_5) {
                 ForEach(state.operationalSurfaces, id: \.name) { surface in
                     GridRow {
                         Text(surface.name)

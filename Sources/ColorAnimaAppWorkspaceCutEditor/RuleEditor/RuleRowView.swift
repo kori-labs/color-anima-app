@@ -26,7 +26,7 @@ package struct RuleRowView: View {
     }
 
     package var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
             Toggle("", isOn: enabledBinding)
                 .toggleStyle(.switch)
                 .controlSize(.mini)

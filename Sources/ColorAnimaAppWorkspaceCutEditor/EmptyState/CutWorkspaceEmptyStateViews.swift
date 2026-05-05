@@ -41,8 +41,8 @@ package struct CutWorkspaceOnboardingSheet: View {
     package init() {}
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
                 Text("Start with an outline frame")
                     .font(.title.bold())
                 Text("Import an outline first, then click Extract to scan regions and bring in highlight and shadow lines when you are ready to preview them together.")
@@ -51,7 +51,7 @@ package struct CutWorkspaceOnboardingSheet: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: 12) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space3) {
                 OnboardingStepCard(number: "1", title: "Outline", subtitle: "closed area source")
                 OnboardingStepCard(number: "2", title: "Scan", subtitle: "press when ready")
                 OnboardingStepCard(number: "3", title: "Assign", subtitle: "subset mapping")
@@ -124,9 +124,9 @@ private struct OnboardingStepCard: View {
         .padding(WorkspaceFoundation.Metrics.space3)
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius)
                 .strokeBorder(WorkspaceChromeStyle.cardStroke, lineWidth: 1)
         }
-        .clipShape(.rect(cornerRadius: 14))
+        .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.cardCornerRadius))
     }
 }

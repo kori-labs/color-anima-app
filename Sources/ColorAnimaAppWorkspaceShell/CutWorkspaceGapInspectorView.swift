@@ -27,7 +27,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
             header
             statsBlock
             evidenceBlock
@@ -38,7 +38,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             Text("Gap Review")
                 .font(.title3.bold())
             Text(candidate.reviewState.displayTitle)
@@ -48,7 +48,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var statsBlock: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             statsRow(label: "Area", value: "\(candidate.area) px")
             statsRow(label: "Pixel count", value: "\(candidate.pixelCount)")
             statsRow(label: "Confidence", value: String(format: "%.2f", candidate.confidence))
@@ -61,7 +61,7 @@ package struct CutWorkspaceGapInspectorView: View {
             Text("Suggested color")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            HStack(spacing: 8) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                 swatch(for: candidate.suggestedColor)
                 Text(candidate.suggestedColor == nil ? "No suggestion" : "From nearest painted region")
                     .font(.caption)

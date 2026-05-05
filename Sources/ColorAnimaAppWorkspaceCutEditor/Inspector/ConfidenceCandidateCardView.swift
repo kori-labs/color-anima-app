@@ -10,7 +10,7 @@ package struct ConfidenceCandidateCardView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
             headerRow
 
             if candidateRegions.isEmpty {

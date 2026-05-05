@@ -25,8 +25,8 @@ package struct InspectorQueueNavigator: View {
 
     package var body: some View {
         if let currentItem = state.currentItem {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
+                HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
                     Text("Review Queue")
                         .font(.headline)
 

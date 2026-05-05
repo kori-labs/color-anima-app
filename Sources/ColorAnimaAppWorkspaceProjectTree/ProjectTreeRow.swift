@@ -119,7 +119,7 @@ struct ProjectTreeRow: View {
     }
 
     private var nodeCardContent: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
             leadingControl
 
             VStack(alignment: .leading, spacing: 1) {
@@ -269,7 +269,7 @@ struct ProjectTreeRow: View {
         RoundedRectangle(cornerRadius: Self.insertionIndicatorThickness / 2, style: .continuous)
             .fill(WorkspaceChromeStyle.treeConnectorStroke)
             .frame(height: Self.insertionIndicatorThickness)
-            .shadow(color: WorkspaceChromeStyle.treeConnectorStroke.opacity(0.12), radius: 2, y: 0)
+            .shadow(color: WorkspaceChromeStyle.treeConnectorStroke.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity), radius: 2, y: 0)
             .allowsHitTesting(false)
     }
 
@@ -281,7 +281,7 @@ struct ProjectTreeRow: View {
             edgeInsertionIndicator
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, hasChildren && !isCollapsed ? 2 : 0)
+        .padding(.top, hasChildren && !isCollapsed ? WorkspaceFoundation.Metrics.microSpace0_5 : 0)
     }
 
     private var childInsertionIndent: CGFloat {
