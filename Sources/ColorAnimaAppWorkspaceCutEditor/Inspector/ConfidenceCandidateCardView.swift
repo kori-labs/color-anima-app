@@ -64,7 +64,7 @@ private struct CandidateRegionEntryView: View {
             }
         }
         .padding(WorkspaceFoundation.Metrics.space2_5)
-        .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+        .background(WorkspaceFoundation.Surface.cardFill, in: RoundedRectangle(cornerRadius: 8))
     }
 
     private var confidenceLabel: String {
@@ -108,10 +108,10 @@ private struct ReasonCodeTag: View {
             .foregroundStyle(.secondary)
             .padding(.horizontal, WorkspaceFoundation.Metrics.microSpace1_75)
             .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
-            .background(Color.secondary.opacity(0.14), in: Capsule())
+            .background(WorkspaceFoundation.Surface.tagFill, in: Capsule())
             .overlay {
                 Capsule()
-                    .strokeBorder(Color.secondary.opacity(0.3), lineWidth: 0.5)
+                    .strokeBorder(WorkspaceFoundation.Stroke.tagBorder, lineWidth: 0.5)
             }
     }
 

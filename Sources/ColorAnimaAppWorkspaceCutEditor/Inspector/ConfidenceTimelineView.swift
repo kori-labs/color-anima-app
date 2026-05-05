@@ -145,7 +145,7 @@ private struct ConfidenceBarView: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(Color.secondary.opacity(0.15))
+                    .fill(WorkspaceFoundation.Surface.tagFill)
 
                 RoundedRectangle(cornerRadius: 3)
                     .fill(barColor)

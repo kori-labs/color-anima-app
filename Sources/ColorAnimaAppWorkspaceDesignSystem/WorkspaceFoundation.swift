@@ -5,6 +5,18 @@ package enum WorkspaceFoundation {
     package enum Surface {
         package static let material: Material = .ultraThinMaterial
 
+        /// Very faint tint for section or summary backgrounds (replaces `Color.secondary.opacity(0.06)`).
+        package static var sectionBackground: Color { Color.secondary.opacity(0.06) }
+
+        /// Subtle fill for cards and list rows (replaces `Color.secondary.opacity(0.08)`).
+        package static var cardFill: Color { Color.secondary.opacity(0.08) }
+
+        /// Inline highlight fill for badges and manual-override indicators (replaces `Color.secondary.opacity(0.12)`).
+        package static var rowHighlight: Color { Color.secondary.opacity(0.12) }
+
+        /// Background fill for small tags and confidence-bar tracks (replaces `Color.secondary.opacity(0.14)` / `0.15`; canonical value 0.14).
+        package static var tagFill: Color { Color.secondary.opacity(0.14) }
+
         package static var surfaceFill: Color {
             WorkspaceFoundation.dynamicColor(
                 light: NSColor(calibratedRed: 0.90, green: 0.95, blue: 0.98, alpha: 0.62),
@@ -79,6 +91,9 @@ package enum WorkspaceFoundation {
         package static var destructiveHoverStroke: Color {
             Color(nsColor: .systemRed).opacity(0.42)
         }
+
+        /// Border stroke for small tag/badge overlays (replaces `Color.secondary.opacity(0.3)`).
+        package static var tagBorder: Color { Color.secondary.opacity(0.3) }
 
         /// Stroke color for focus rings on text-input controls (e.g. InlineRenameField).
         /// Lower-opacity variant of selection accent so the ring reads as focus, not selection.

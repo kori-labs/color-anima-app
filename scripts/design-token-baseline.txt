@@ -1,5 +1,1 @@
 Sources/ColorAnimaAppWorkspaceCutEditor/FrameStrip/FrameStripCardView.swift	1
-Sources/ColorAnimaAppWorkspaceCutEditor/Inspector/ConfidenceCandidateCardView.swift	3
-Sources/ColorAnimaAppWorkspaceCutEditor/Inspector/ConfidenceTimelineView.swift	1
-Sources/ColorAnimaAppWorkspaceCutEditor/Inspector/InspectorQueueNavigator.swift	1
-Sources/ColorAnimaAppWorkspaceShell/WorkspaceSelectionSummaryView.swift	1
