@@ -10,6 +10,7 @@ let kernelBridgeDependencies: [Target.Dependency] = kernelTargetIsActive ? ["Col
 
 var products: [Product] = [
     .library(name: "ColorAnimaDesignStudioTokenManifest", targets: ["ColorAnimaDesignStudioTokenManifest"]),
+    .executable(name: "ColorAnimaDesignStudio", targets: ["ColorAnimaDesignStudio"]),
     .executable(name: "ColorAnimaDesignStudioTokenManifestExtractor", targets: ["ColorAnimaDesignStudioTokenManifestExtractor"]),
     .library(name: "ColorAnimaKernelBridge", targets: ["ColorAnimaKernelBridge"]),
     .library(name: "ColorAnimaAppEngine", targets: ["ColorAnimaAppEngine"]),
@@ -29,6 +30,14 @@ var targets: [Target] = [
         name: "ColorAnimaDesignStudioTokenManifest",
         path: "Sources/ColorAnimaDesignStudioTokenManifest",
         resources: [.process("Resources")]
+    ),
+    .executableTarget(
+        name: "ColorAnimaDesignStudio",
+        dependencies: [
+            "ColorAnimaDesignStudioTokenManifest",
+            "ColorAnimaAppWorkspaceDesignSystem",
+        ],
+        path: "Sources/ColorAnimaDesignStudio"
     ),
     .executableTarget(
         name: "ColorAnimaDesignStudioTokenManifestExtractor",
