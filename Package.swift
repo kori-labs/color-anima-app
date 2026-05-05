@@ -9,13 +9,6 @@ let kernelTargetIsActive = kernelPath != nil || (kernelURL != nil && kernelCheck
 let kernelBridgeDependencies: [Target.Dependency] = kernelTargetIsActive ? ["ColorAnimaKernel"] : []
 
 var products: [Product] = [
-    .library(name: "ColorAnimaDesignStudioTokenManifest", targets: ["ColorAnimaDesignStudioTokenManifest"]),
-    .library(name: "ColorAnimaDesignStudioExtractorCore", targets: ["ColorAnimaDesignStudioExtractorCore"]),
-    .library(name: "ColorAnimaDesignStudioPreview", targets: ["ColorAnimaDesignStudioPreview"]),
-    .library(name: "ColorAnimaDesignStudioIntegratedPreview", targets: ["ColorAnimaDesignStudioIntegratedPreview"]),
-    .executable(name: "ColorAnimaDesignStudio", targets: ["ColorAnimaDesignStudio"]),
-    .executable(name: "ColorAnimaDesignStudioTokenManifestExtractor", targets: ["ColorAnimaDesignStudioTokenManifestExtractor"]),
-    .library(name: "ColorAnimaDesignStudioWriteBack", targets: ["ColorAnimaDesignStudioWriteBack"]),
     .library(name: "ColorAnimaKernelBridge", targets: ["ColorAnimaKernelBridge"]),
     .library(name: "ColorAnimaAppEngine", targets: ["ColorAnimaAppEngine"]),
     .library(name: "ColorAnimaAppWorkspaceApplication", targets: ["ColorAnimaAppWorkspaceApplication"]),
@@ -30,60 +23,6 @@ var products: [Product] = [
 ]
 
 var targets: [Target] = [
-    .target(
-        name: "ColorAnimaDesignStudioTokenManifest",
-        path: "Sources/ColorAnimaDesignStudioTokenManifest",
-        resources: [.process("Resources")]
-    ),
-    .target(
-        name: "ColorAnimaDesignStudioExtractorCore",
-        dependencies: ["ColorAnimaDesignStudioTokenManifest"],
-        path: "Sources/ColorAnimaDesignStudioExtractorCore"
-    ),
-    .target(
-        name: "ColorAnimaDesignStudioPreview",
-        dependencies: [
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaAppWorkspaceDesignSystem",
-        ],
-        path: "Sources/ColorAnimaDesignStudioPreview"
-    ),
-    .target(
-        name: "ColorAnimaDesignStudioIntegratedPreview",
-        dependencies: [
-            "ColorAnimaAppEngine",
-            "ColorAnimaAppShell",
-            "ColorAnimaAppWorkspace",
-        ],
-        path: "Sources/ColorAnimaDesignStudioIntegratedPreview"
-    ),
-    .executableTarget(
-        name: "ColorAnimaDesignStudio",
-        dependencies: [
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioPreview",
-            "ColorAnimaDesignStudioIntegratedPreview",
-            "ColorAnimaDesignStudioWriteBack",
-            "ColorAnimaAppWorkspaceDesignSystem",
-        ],
-        path: "Sources/ColorAnimaDesignStudio"
-    ),
-    .executableTarget(
-        name: "ColorAnimaDesignStudioTokenManifestExtractor",
-        dependencies: [
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioExtractorCore",
-        ],
-        path: "Sources/ColorAnimaDesignStudioTokenManifestExtractor"
-    ),
-    .target(
-        name: "ColorAnimaDesignStudioWriteBack",
-        dependencies: [
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioExtractorCore",
-        ],
-        path: "Sources/ColorAnimaDesignStudioWriteBack"
-    ),
     .target(
         name: "ColorAnimaKernelBridge",
         dependencies: kernelBridgeDependencies,
@@ -221,28 +160,6 @@ var targets: [Target] = [
     .testTarget(
         name: "ColorAnimaPublicSurfaceTests",
         path: "Tests/ColorAnimaPublicSurfaceTests"
-    ),
-    .testTarget(
-        name: "ColorAnimaDesignStudioTokenManifestTests",
-        dependencies: [
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioExtractorCore",
-        ],
-        path: "Tests/ColorAnimaDesignStudioTokenManifestTests"
-    ),
-    .testTarget(
-        name: "ColorAnimaDesignStudioWriteBackTests",
-        dependencies: [
-            "ColorAnimaDesignStudioWriteBack",
-            "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioExtractorCore",
-        ],
-        path: "Tests/ColorAnimaDesignStudioWriteBackTests"
-    ),
-    .testTarget(
-        name: "ColorAnimaDesignStudioTests",
-        dependencies: ["ColorAnimaDesignStudioPreview"],
-        path: "Tests/ColorAnimaDesignStudioTests"
     ),
 ]
 
