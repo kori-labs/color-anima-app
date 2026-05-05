@@ -11,6 +11,30 @@ package enum WorkspaceFoundation {
                 dark: NSColor(calibratedRed: 0.14, green: 0.16, blue: 0.20, alpha: 0.62)
             )
         }
+
+        /// Base drawing canvas — neutral, matte, full-opacity.
+        package static var canvas: Color {
+            WorkspaceFoundation.dynamicColor(
+                light: NSColor(calibratedWhite: 0.97, alpha: 1),
+                dark: NSColor(calibratedRed: 0.10, green: 0.11, blue: 0.13, alpha: 1)
+            )
+        }
+
+        /// Floating overlay surface (panels, popovers) — slightly elevated, translucent.
+        package static var overlay: Color {
+            WorkspaceFoundation.dynamicColor(
+                light: NSColor.white.withAlphaComponent(0.9),
+                dark: NSColor(calibratedWhite: 0.08, alpha: 0.8)
+            )
+        }
+
+        /// Raised card or panel surface — one step above canvas.
+        package static var raised: Color {
+            WorkspaceFoundation.dynamicColor(
+                light: NSColor(calibratedWhite: 1, alpha: 0.88),
+                dark: NSColor(calibratedWhite: 0.14, alpha: 1)
+            )
+        }
     }
 
     package enum Foreground {
