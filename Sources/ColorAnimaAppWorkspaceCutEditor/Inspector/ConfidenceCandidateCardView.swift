@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct ConfidenceCandidateCardView: View {
@@ -62,7 +63,7 @@ private struct CandidateRegionEntryView: View {
                 reasonTagRow
             }
         }
-        .padding(10)
+        .padding(WorkspaceFoundation.Metrics.footerButtonCornerRadius) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
         .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 
@@ -105,8 +106,8 @@ private struct ReasonCodeTag: View {
         Text(label)
             .font(.caption2.weight(.semibold))
             .foregroundStyle(.secondary)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 3)
+            .padding(.horizontal, 7) // TODO: off-grid(7); no token match
+            .padding(.vertical, 3) // TODO: off-grid(3); no token match
             .background(Color.secondary.opacity(0.14), in: Capsule())
             .overlay {
                 Capsule()

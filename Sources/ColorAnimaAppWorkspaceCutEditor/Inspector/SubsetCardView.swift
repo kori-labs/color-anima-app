@@ -118,7 +118,7 @@ package struct SubsetCardView: View {
                 selectedEditor
             }
         }
-        .padding(14)
+        .padding(14) // TODO: off-grid(14); snap to space3(12) or space4(16) in follow-up
         .frame(maxWidth: .infinity, alignment: .leading)
         .chromeSelectablePanelCard(isActive: isSelected || isHovered, cornerRadius: 16)
         .contentShape(.rect(cornerRadius: 16))

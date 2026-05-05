@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct RuleRowView: View {
@@ -70,7 +71,7 @@ package struct RuleRowView: View {
             .buttonStyle(.plain)
             .foregroundStyle(.secondary)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, WorkspaceFoundation.Metrics.space1)
     }
 
     private var enabledBinding: Binding<Bool> {

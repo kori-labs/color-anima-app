@@ -65,7 +65,7 @@ package struct CanvasPreviewZoomControls: View {
             .disabled(!state.canReset)
         }
         .buttonStyle(.bordered)
-        .padding(10)
+        .padding(WorkspaceFoundation.Metrics.footerButtonCornerRadius) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
         .background(WorkspaceChromeStyle.overlayPanelFill)
         .overlay {
             RoundedRectangle(cornerRadius: 14)
