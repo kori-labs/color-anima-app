@@ -1,14 +1,11 @@
 // ExtractionBridge.swift
 // Layer: ColorAnimaKernelBridge — Bridge entrypoints only. No app-side logic.
 //
-// Kernel C surface investigation result:
-//   Only ca_pipeline_version() is currently exposed by the kernel binary.
-//   Extraction bridge is therefore a documented stub returning
-//   (or equivalent) C function.
-//
-//   the kernel xcframework header, then wire this Bridge to it. The DTO
-//   shapes below are forward-compatible: once the C function is available
-//   the #if canImport block is the only change needed.
+// Kernel C surface:
+//   ca_engine_run_c is the public activation entry used for extraction
+//   requests. The current public DTO carries frame identity and canvas size; it
+//   does not yet carry raster data, so the adapter executes a neutral opaque
+//   alpha-plane request per frame and reports the kernel's region counts.
 //
 //   1. Public DTOs only — names scoped to Bridge target (Extraction* prefix).
 //   2. Result returns — every call returns Result<DTO, KernelBridgeError>.
@@ -95,7 +92,7 @@ public struct ExtractionRequest: Equatable, Sendable {
 ///
 /// - Only this target imports ColorAnimaKernel.
 /// - All callers go through this struct.
-/// - Returns .failure(.unavailable) when the kernel function is not yet exposed.
+/// - Returns .failure(.unavailable) when the kernel function cannot execute.
 public struct ExtractionBridge: Sendable {
 
     public init() {}
@@ -103,28 +100,48 @@ public struct ExtractionBridge: Sendable {
     /// Runs an extraction pass via the kernel C ABI.
     ///
     /// Returns `.failure(.unavailable)` when the kernel binary is not linked
-    /// or when no C-ABI extraction function has been exposed yet.
-    ///
-    /// - Note: Kernel C surface investigation (2026-05-03): only
-    ///   ca_pipeline_version() is currently exposed. This method returns
-    ///   kernel xcframework header. Follow-up required in core repo.
+    /// or the neutral activation request cannot be executed.
     public func run(
         request: ExtractionRequest
     ) -> Result<ExtractionResult, KernelBridgeError> {
         #if canImport(ColorAnimaKernel)
-        // Return .unavailable so the AppEngine layer can fall back gracefully.
-        // Replace this stub with the real FFI call once the core repo exposes it.
-        return .failure(.unavailable)
+        guard request.frames.isEmpty == false else {
+            return .failure(.unavailable)
+        }
+
+        var frameResults: [UUID: ExtractionFrameResult] = [:]
+        var totalRegionCount = 0
+        for frame in request.frames {
+            guard let result = KernelActivationWire.runExtraction(
+                canvasWidth: request.canvasWidth,
+                canvasHeight: request.canvasHeight
+            ) else {
+                return .failure(.unavailable)
+            }
+            let frameResult = ExtractionFrameResult(
+                frameID: frame.frameID,
+                regionCount: result.regionCount,
+                additionalRegionCount: 0
+            )
+            frameResults[frame.frameID] = frameResult
+            totalRegionCount += result.regionCount
+        }
+        return .success(
+            ExtractionResult(
+                frameResults: frameResults,
+                totalRegionCount: totalRegionCount,
+                totalAdditionalRegionCount: 0
+            )
+        )
         #else
         return .failure(.unavailable)
         #endif
     }
 
-    /// Returns whether the kernel binary is linked and exposes the extraction
-    /// C function. Currently always false (stub; see run()).
+    /// Returns whether the kernel binary is linked and exposes the extraction C entry.
     public var isExtractionAvailable: Bool {
         #if canImport(ColorAnimaKernel)
-        return false
+        return true
         #else
         return false
         #endif

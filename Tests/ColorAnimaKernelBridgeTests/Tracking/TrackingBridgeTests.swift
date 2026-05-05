@@ -8,12 +8,12 @@ final class TrackingBridgeTests: XCTestCase {
 
     func testBridgeAvailabilityReflectsKernelSurface() {
         let bridge = TrackingBridge()
-        XCTAssertFalse(bridge.isTrackingAvailable)
+        XCTAssertEqual(bridge.isTrackingAvailable, KernelBridge().status.isLinked)
     }
 
-    // MARK: - Result path: .unavailable fallback
+    // MARK: - Result paths
 
-    func testRunReturnsUnavailableWhenKernelFunctionNotExposed() {
+    func testRunReturnsUnavailableForEmptyRequest() {
         let bridge = TrackingBridge()
         let request = TrackingRequest(
             frames: [],
@@ -26,11 +26,11 @@ final class TrackingBridgeTests: XCTestCase {
         case .failure(let error):
             XCTAssertEqual(error, .unavailable)
         case .success:
-            XCTFail("Expected .failure(.unavailable) while kernel C function is not exposed")
+            XCTFail("Expected .failure(.unavailable) for empty request")
         }
     }
 
-    func testRunReturnsUnavailableForNonEmptyRequest() {
+    func testRunUsesKernelWhenLinkedForNonEmptyRequest() {
         let bridge = TrackingBridge()
         let frameIDs = (0 ..< 5).map { _ in UUID() }
         let frames = frameIDs.enumerated().map { index, id in
@@ -47,11 +47,21 @@ final class TrackingBridgeTests: XCTestCase {
             canvasHeight: 1080
         )
         let result = bridge.run(request: request)
-        guard case .failure(let error) = result else {
-            XCTFail("Expected .failure(.unavailable)")
-            return
+        if bridge.isTrackingAvailable {
+            guard case .success(let output) = result else {
+                XCTFail("Expected success when kernel is linked")
+                return
+            }
+            XCTAssertEqual(output.frameResults.count, frames.count)
+            XCTAssertEqual(output.totalResolvedCount, 0)
+            XCTAssertTrue(output.completed)
+        } else {
+            guard case .failure(let error) = result else {
+                XCTFail("Expected .failure(.unavailable)")
+                return
+            }
+            XCTAssertEqual(error, .unavailable)
         }
-        XCTAssertEqual(error, .unavailable)
     }
 
     // MARK: - DTO construction

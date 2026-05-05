@@ -1,15 +1,11 @@
 // RegionRewriteBridge.swift
 // Layer: ColorAnimaKernelBridge — Bridge entrypoints only. No app-side logic.
 //
-// Kernel C surface investigation result:
-//   Only ca_pipeline_version() is currently exposed by the kernel binary.
-//   No ca_*propagation* function exists in the current kernel surface.
-//   Region rewrite bridge is therefore a documented stub returning
-//   (or equivalent) C function.
-//
-//   Expose a C-ABI region rewrite entry point (e.g.
-//   this Bridge to it. The DTO shapes below are forward-compatible: once the
-//   C function is available the #if canImport block is the only change needed.
+// Kernel C surface:
+//   ca_engine_run_a is the public activation entry used for bounded region
+//   rewrite requests. The current public DTO carries frame identity/window
+//   metadata; it does not yet carry region payloads, so the adapter sends empty
+//   region sets and reports the neutral result counts returned by the kernel.
 //
 //   1. Public DTOs only — names scoped to Bridge target (RegionRewrite* prefix).
 //   2. Opaque handles — kernel-resident state as OpaquePointer-backed KernelHandle.
@@ -131,28 +127,47 @@ public struct RegionRewriteBridge: Sendable {
     /// Runs a region rewrite pass via the kernel C ABI.
     ///
     /// Returns `.failure(.unavailable)` when the kernel binary is not linked
-    /// or when no C-ABI region rewrite function has been exposed yet.
-    ///
-    /// - Note: Kernel C surface investigation (2026-05-03): only
-    ///   ca_pipeline_version() is currently exposed. This method returns
-    ///   added to the kernel xcframework header. Follow-up required in core repo.
+    /// or the neutral activation request cannot be executed.
     public func run(
         request: RegionRewriteRequest
     ) -> Result<RegionRewriteResult, KernelBridgeError> {
         #if canImport(ColorAnimaKernel)
-        // Return .unavailable so the AppEngine layer can fall back gracefully.
-        // Replace this stub with the real FFI call once the core repo exposes it.
-        return .failure(.unavailable)
+        guard let result = KernelActivationWire.runBoundedPropagation(
+            frames: request.frames,
+            applyRange: request.applyRange,
+            pinnedFrameIDs: request.pinnedFrameIDs,
+            canvasWidth: request.canvasWidth,
+            canvasHeight: request.canvasHeight
+        ) else {
+            return .failure(.unavailable)
+        }
+        let frameResults = Dictionary(
+            uniqueKeysWithValues: result.frameResults.map {
+                (
+                    $0.frameID,
+                    RegionRewriteFrameResult(
+                        frameID: $0.frameID,
+                        updatedRegionCount: $0.correspondenceCount
+                    )
+                )
+            }
+        )
+        return .success(
+            RegionRewriteResult(
+                frameResults: frameResults,
+                totalRewrittenCount: result.totalCorrespondenceCount,
+                totalPreservedOverrideCount: 0
+            )
+        )
         #else
         return .failure(.unavailable)
         #endif
     }
 
-    /// Returns whether the kernel binary is linked and exposes the bounded
-    /// propagation C function. Currently always false (stub; see run()).
+    /// Returns whether the kernel binary is linked and exposes the bounded C entry.
     public var isRegionRewriteAvailable: Bool {
         #if canImport(ColorAnimaKernel)
-        return false
+        return true
         #else
         return false
         #endif

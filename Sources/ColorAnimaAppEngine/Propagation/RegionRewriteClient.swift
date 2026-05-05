@@ -14,7 +14,7 @@ public struct RegionRewriteApplyReport: Equatable, Sendable {
     public let rewrittenRegionCount: Int
     /// Number of manual overrides preserved inside the window.
     public let preservedOverrideCount: Int
-    /// Whether the kernel executed the run (false when running in stub/unavailable mode).
+    /// Whether the kernel executed the run (false when running in unavailable mode).
     public let kernelExecuted: Bool
 
     public init(
@@ -76,9 +76,9 @@ public struct RegionRewriteClientRequest: Equatable, Sendable {
 /// Wraps RegionRewriteBridge and translates between public app DTOs
 /// and Bridge DTOs. Callers never interact with Bridge types directly.
 ///
-/// When the kernel binary is not linked (or the C-ABI region rewrite
-/// function is not yet exposed), run() returns a zero-count report with
-/// kernelExecuted = false — allowing callers to fall back gracefully.
+/// When the kernel binary is not linked or the activation call cannot execute,
+/// run() returns a zero-count report with kernelExecuted = false, allowing
+/// callers to fall back gracefully.
 public struct RegionRewriteClient: Sendable {
     private let bridge: RegionRewriteBridge
 
@@ -87,7 +87,6 @@ public struct RegionRewriteClient: Sendable {
     }
 
     /// Whether the underlying kernel function is available.
-    /// Currently always false (stub; see RegionRewriteBridge.swift for follow-up notes).
     public var isAvailable: Bool {
         bridge.isRegionRewriteAvailable
     }
@@ -95,8 +94,8 @@ public struct RegionRewriteClient: Sendable {
     /// Runs a region rewrite pass and returns an apply report.
     ///
     /// Returns a zero-count report with kernelExecuted = false when the
-    /// kernel C function is not yet exposed. The coordinator layer uses this
-    /// to fall back to the Swift-only path without crashing.
+    /// kernel activation call is unavailable. The coordinator layer uses this
+    /// to fall back without crashing.
     public func run(
         request: RegionRewriteClientRequest
     ) -> RegionRewriteApplyReport {

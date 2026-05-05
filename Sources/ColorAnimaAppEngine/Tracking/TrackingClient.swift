@@ -14,7 +14,7 @@ public struct TrackingApplyReport: Equatable, Sendable {
     public let resolvedCorrespondenceCount: Int
     /// Number of frames processed in this run.
     public let processedFrameCount: Int
-    /// Whether the kernel executed the run (false when running in stub/unavailable mode).
+    /// Whether the kernel executed the run (false when running in unavailable mode).
     public let kernelExecuted: Bool
 
     public init(
@@ -72,9 +72,9 @@ public struct TrackingClientRequest: Equatable, Sendable {
 /// Wraps TrackingBridge and translates between public app DTOs and Bridge DTOs.
 /// Callers never interact with Bridge types directly.
 ///
-/// When the kernel binary is not linked (or the C-ABI tracking function is not
-/// yet exposed), run() returns a zero-count report with kernelExecuted = false —
-/// allowing callers to fall back gracefully.
+/// When the kernel binary is not linked or the activation call cannot execute,
+/// run() returns a zero-count report with kernelExecuted = false, allowing
+/// callers to fall back gracefully.
 public struct TrackingClient: Sendable {
     private let bridge: TrackingBridge
 
@@ -83,7 +83,6 @@ public struct TrackingClient: Sendable {
     }
 
     /// Whether the underlying kernel function is available.
-    /// Currently always false (stub; see TrackingBridge.swift for follow-up notes).
     public var isAvailable: Bool {
         bridge.isTrackingAvailable
     }
@@ -91,8 +90,8 @@ public struct TrackingClient: Sendable {
     /// Runs a tracking pass and returns an apply report.
     ///
     /// Returns a zero-count report with kernelExecuted = false when the
-    /// kernel C function is not yet exposed. The coordinator layer uses this
-    /// to fall back to the Swift-only path without crashing.
+    /// kernel activation call is unavailable. The coordinator layer uses this
+    /// to fall back without crashing.
     public func run(
         request: TrackingClientRequest
     ) -> TrackingApplyReport {

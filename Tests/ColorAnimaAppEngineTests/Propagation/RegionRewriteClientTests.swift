@@ -6,9 +6,9 @@ final class RegionRewriteClientTests: XCTestCase {
 
     // MARK: - Availability
 
-    func testClientIsUnavailableWhileKernelFunctionNotExposed() {
+    func testClientAvailabilityReflectsKernelTarget() {
         let client = RegionRewriteClient()
-        XCTAssertFalse(client.isAvailable)
+        XCTAssertEqual(client.isAvailable, kernelTargetRequested)
     }
 
     // MARK: - run returns zero-count report when unavailable
@@ -22,11 +22,11 @@ final class RegionRewriteClientTests: XCTestCase {
         XCTAssertFalse(report.kernelExecuted)
     }
 
-    func testRunWithNonEmptyFramesReturnsUnavailableReport() {
+    func testRunWithNonEmptyFramesUsesKernelWhenAvailable() {
         let client = RegionRewriteClient()
         let request = makeRequest(frameCount: 5, applyRange: 0 ... 4)
         let report = client.run(request: request)
-        XCTAssertFalse(report.kernelExecuted)
+        XCTAssertEqual(report.kernelExecuted, client.isAvailable)
         XCTAssertEqual(report.rewrittenRegionCount, 0)
     }
 
@@ -79,6 +79,12 @@ final class RegionRewriteClientTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    private var kernelTargetRequested: Bool {
+        let environment = ProcessInfo.processInfo.environment
+        return environment["COLOR_ANIMA_KERNEL_PATH"] != nil ||
+            environment["COLOR_ANIMA_KERNEL_URL"] != nil
+    }
 
     private func makeRequest(
         frameCount: Int,

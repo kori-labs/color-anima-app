@@ -6,9 +6,9 @@ final class TrackingClientTests: XCTestCase {
 
     // MARK: - Availability
 
-    func testClientIsUnavailableWhileKernelFunctionNotExposed() {
+    func testClientAvailabilityReflectsKernelTarget() {
         let client = TrackingClient()
-        XCTAssertFalse(client.isAvailable)
+        XCTAssertEqual(client.isAvailable, kernelTargetRequested)
     }
 
     // MARK: - run returns zero-count report when unavailable
@@ -22,11 +22,12 @@ final class TrackingClientTests: XCTestCase {
         XCTAssertFalse(report.kernelExecuted)
     }
 
-    func testRunWithNonEmptyFramesReturnsUnavailableReport() {
+    func testRunWithNonEmptyFramesUsesKernelWhenAvailable() {
         let client = TrackingClient()
         let request = makeRequest(frameCount: 5, referenceIndices: [0])
         let report = client.run(request: request)
-        XCTAssertFalse(report.kernelExecuted)
+        XCTAssertEqual(report.kernelExecuted, client.isAvailable)
+        XCTAssertEqual(report.processedFrameCount, client.isAvailable ? 5 : 0)
         XCTAssertEqual(report.resolvedCorrespondenceCount, 0)
     }
 
@@ -79,6 +80,12 @@ final class TrackingClientTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    private var kernelTargetRequested: Bool {
+        let environment = ProcessInfo.processInfo.environment
+        return environment["COLOR_ANIMA_KERNEL_PATH"] != nil ||
+            environment["COLOR_ANIMA_KERNEL_URL"] != nil
+    }
 
     private func makeRequest(
         frameCount: Int,
