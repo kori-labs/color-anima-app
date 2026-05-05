@@ -9,6 +9,8 @@ let kernelTargetIsActive = kernelPath != nil || (kernelURL != nil && kernelCheck
 let kernelBridgeDependencies: [Target.Dependency] = kernelTargetIsActive ? ["ColorAnimaKernel"] : []
 
 var products: [Product] = [
+    .library(name: "ColorAnimaDesignStudioTokenManifest", targets: ["ColorAnimaDesignStudioTokenManifest"]),
+    .executable(name: "ColorAnimaDesignStudioTokenManifestExtractor", targets: ["ColorAnimaDesignStudioTokenManifestExtractor"]),
     .library(name: "ColorAnimaKernelBridge", targets: ["ColorAnimaKernelBridge"]),
     .library(name: "ColorAnimaAppEngine", targets: ["ColorAnimaAppEngine"]),
     .library(name: "ColorAnimaAppWorkspaceApplication", targets: ["ColorAnimaAppWorkspaceApplication"]),
@@ -23,6 +25,16 @@ var products: [Product] = [
 ]
 
 var targets: [Target] = [
+    .target(
+        name: "ColorAnimaDesignStudioTokenManifest",
+        path: "Sources/ColorAnimaDesignStudioTokenManifest",
+        resources: [.process("Resources")]
+    ),
+    .executableTarget(
+        name: "ColorAnimaDesignStudioTokenManifestExtractor",
+        dependencies: ["ColorAnimaDesignStudioTokenManifest"],
+        path: "Sources/ColorAnimaDesignStudioTokenManifestExtractor"
+    ),
     .target(
         name: "ColorAnimaKernelBridge",
         dependencies: kernelBridgeDependencies,
@@ -160,6 +172,14 @@ var targets: [Target] = [
     .testTarget(
         name: "ColorAnimaPublicSurfaceTests",
         path: "Tests/ColorAnimaPublicSurfaceTests"
+    ),
+    .testTarget(
+        name: "ColorAnimaDesignStudioTokenManifestTests",
+        dependencies: [
+            "ColorAnimaDesignStudioTokenManifest",
+            "ColorAnimaDesignStudioTokenManifestExtractor",
+        ],
+        path: "Tests/ColorAnimaDesignStudioTokenManifestTests"
     ),
 ]
 
