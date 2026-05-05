@@ -80,7 +80,8 @@ public struct EngineStatusSheet: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .padding(WorkspaceFoundation.Metrics.space6) // was 28pt; snapped to space6=24pt (nearest grid step)
+        // TODO(design-system): off-grid 28pt padding; consider adding Metrics.space7=28 in a Phase 0 follow-up.
+        .padding(28)
         .frame(minWidth: 520, minHeight: 420)
     }
 }

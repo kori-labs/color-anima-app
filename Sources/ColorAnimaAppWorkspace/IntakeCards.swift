@@ -31,7 +31,8 @@ package struct IntakeChrome<Content: View>: View {
                 .font(WorkspaceFoundation.Typography.caption)
                 .foregroundStyle(.secondary)
         }
-        .padding(WorkspaceFoundation.Metrics.space6) // was 28pt; snapped to space6=24pt (nearest grid step)
+        // TODO(design-system): off-grid 28pt padding; consider adding Metrics.space7=28 in a Phase 0 follow-up.
+        .padding(28)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
