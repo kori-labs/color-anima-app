@@ -10,6 +10,7 @@ let kernelBridgeDependencies: [Target.Dependency] = kernelTargetIsActive ? ["Col
 
 var products: [Product] = [
     .library(name: "ColorAnimaDesignStudioTokenManifest", targets: ["ColorAnimaDesignStudioTokenManifest"]),
+    .library(name: "ColorAnimaDesignStudioPreview", targets: ["ColorAnimaDesignStudioPreview"]),
     .executable(name: "ColorAnimaDesignStudio", targets: ["ColorAnimaDesignStudio"]),
     .executable(name: "ColorAnimaDesignStudioTokenManifestExtractor", targets: ["ColorAnimaDesignStudioTokenManifestExtractor"]),
     .library(name: "ColorAnimaDesignStudioWriteBack", targets: ["ColorAnimaDesignStudioWriteBack"]),
@@ -32,10 +33,19 @@ var targets: [Target] = [
         path: "Sources/ColorAnimaDesignStudioTokenManifest",
         resources: [.process("Resources")]
     ),
+    .target(
+        name: "ColorAnimaDesignStudioPreview",
+        dependencies: [
+            "ColorAnimaDesignStudioTokenManifest",
+            "ColorAnimaAppWorkspaceDesignSystem",
+        ],
+        path: "Sources/ColorAnimaDesignStudioPreview"
+    ),
     .executableTarget(
         name: "ColorAnimaDesignStudio",
         dependencies: [
             "ColorAnimaDesignStudioTokenManifest",
+            "ColorAnimaDesignStudioPreview",
             "ColorAnimaAppWorkspaceDesignSystem",
         ],
         path: "Sources/ColorAnimaDesignStudio"
@@ -207,6 +217,11 @@ var targets: [Target] = [
             "ColorAnimaDesignStudioTokenManifestExtractor",
         ],
         path: "Tests/ColorAnimaDesignStudioWriteBackTests"
+    ),
+    .testTarget(
+        name: "ColorAnimaDesignStudioTests",
+        dependencies: ["ColorAnimaDesignStudioPreview"],
+        path: "Tests/ColorAnimaDesignStudioTests"
     ),
 ]
 
