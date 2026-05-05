@@ -36,11 +36,11 @@ package enum WorkspaceChromeAppearance {
         alpha: CGFloat,
         in appearance: NSAppearance
     ) -> NSColor {
-        var resolved = color.withAlphaComponent(alpha)
+        var resolved = color
         appearance.performAsCurrentDrawingAppearance {
-            resolved = color.withAlphaComponent(alpha)
+            resolved = color.usingType(.componentBased) ?? color
         }
-        return resolved
+        return resolved.withAlphaComponent(alpha)
     }
 
     private static func dynamicNSColor(light: NSColor, dark: NSColor) -> NSColor {
