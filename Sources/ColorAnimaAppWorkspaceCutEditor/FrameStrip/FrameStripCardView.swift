@@ -59,7 +59,8 @@ package struct FrameStripCardView: View {
                         Spacer(minLength: 0)
                     }
                 }
-                .padding(WorkspaceFoundation.Metrics.footerButtonCornerRadius) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
+                // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
+                .padding(10)
                 .frame(width: 148, alignment: .leading)
                 .frame(height: 84, alignment: .topLeading)
                 .background(tileFill)

@@ -1,5 +1,4 @@
 import ColorAnimaAppWorkspaceApplication
-import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct InspectorTrackingPanel: View {

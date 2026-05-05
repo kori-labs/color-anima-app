@@ -119,7 +119,8 @@ private struct ConfidenceFrameRowView: View {
 
             ReviewStateBadgeView(state: row.reviewState)
         }
-        .padding(.horizontal, WorkspaceFoundation.Metrics.footerButtonCornerRadius) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
+        // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
+        .padding(.horizontal, 10)
         .padding(.vertical, 7) // TODO: off-grid(7); no token match
         .background(
             isSelected || isHovered
