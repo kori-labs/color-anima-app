@@ -49,6 +49,12 @@ package enum WorkspaceFoundation {
         package static var destructiveForeground: Color {
             Color(nsColor: .systemRed)
         }
+
+        /// Foreground color for disabled interactive controls.
+        /// Replaces raw `.opacity(0.55)` so WCAG contrast is auditable by token.
+        package static var disabledForeground: Color {
+            Color(nsColor: .tertiaryLabelColor)
+        }
     }
 
     package enum Stroke {
@@ -104,6 +110,11 @@ package enum WorkspaceFoundation {
 
         package static var destructiveHoverFill: Color {
             Color(nsColor: .systemRed).opacity(0.12)
+        }
+
+        /// Background fill for disabled controls (transparent — no fill by default).
+        package static var disabledFill: Color {
+            .clear
         }
     }
 
