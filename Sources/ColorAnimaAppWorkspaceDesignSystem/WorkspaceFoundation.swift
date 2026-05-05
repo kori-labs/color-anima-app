@@ -95,7 +95,7 @@ package enum WorkspaceFoundation {
         // Backward-compatible aliases (do not remove)
         package static let edgePadding: CGFloat = space5          // was 20; aliased to space5
         // Off-grid legacy value; preserved to avoid visual regression.
-        // TODO: snap to space2 in a follow-up after audit confirms zero visual delta.
+        // TODO: snap to space2 in a follow-up after audit confirms the change is acceptable and no regressions.
         package static let compactControlPadding: CGFloat = 6
 
         // Corner radii (unchanged)
