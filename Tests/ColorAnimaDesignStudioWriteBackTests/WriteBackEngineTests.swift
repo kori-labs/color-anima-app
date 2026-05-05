@@ -16,7 +16,7 @@ import Testing
 import Foundation
 @testable import ColorAnimaDesignStudioWriteBack
 import ColorAnimaDesignStudioTokenManifest
-import ColorAnimaDesignStudioTokenManifestExtractor
+import ColorAnimaDesignStudioExtractorCore
 
 // MARK: - Test suite
 

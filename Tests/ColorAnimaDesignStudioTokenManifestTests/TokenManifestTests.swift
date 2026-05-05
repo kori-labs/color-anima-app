@@ -1,7 +1,7 @@
 import Testing
 import Foundation
 @testable import ColorAnimaDesignStudioTokenManifest
-import ColorAnimaDesignStudioTokenManifestExtractor
+import ColorAnimaDesignStudioExtractorCore
 
 @Suite("TokenManifest")
 struct TokenManifestTests {

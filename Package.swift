@@ -10,6 +10,7 @@ let kernelBridgeDependencies: [Target.Dependency] = kernelTargetIsActive ? ["Col
 
 var products: [Product] = [
     .library(name: "ColorAnimaDesignStudioTokenManifest", targets: ["ColorAnimaDesignStudioTokenManifest"]),
+    .library(name: "ColorAnimaDesignStudioExtractorCore", targets: ["ColorAnimaDesignStudioExtractorCore"]),
     .library(name: "ColorAnimaDesignStudioPreview", targets: ["ColorAnimaDesignStudioPreview"]),
     .library(name: "ColorAnimaDesignStudioIntegratedPreview", targets: ["ColorAnimaDesignStudioIntegratedPreview"]),
     .executable(name: "ColorAnimaDesignStudio", targets: ["ColorAnimaDesignStudio"]),
@@ -35,6 +36,11 @@ var targets: [Target] = [
         resources: [.process("Resources")]
     ),
     .target(
+        name: "ColorAnimaDesignStudioExtractorCore",
+        dependencies: ["ColorAnimaDesignStudioTokenManifest"],
+        path: "Sources/ColorAnimaDesignStudioExtractorCore"
+    ),
+    .target(
         name: "ColorAnimaDesignStudioPreview",
         dependencies: [
             "ColorAnimaDesignStudioTokenManifest",
@@ -57,20 +63,24 @@ var targets: [Target] = [
             "ColorAnimaDesignStudioTokenManifest",
             "ColorAnimaDesignStudioPreview",
             "ColorAnimaDesignStudioIntegratedPreview",
+            "ColorAnimaDesignStudioWriteBack",
             "ColorAnimaAppWorkspaceDesignSystem",
         ],
         path: "Sources/ColorAnimaDesignStudio"
     ),
     .executableTarget(
         name: "ColorAnimaDesignStudioTokenManifestExtractor",
-        dependencies: ["ColorAnimaDesignStudioTokenManifest"],
+        dependencies: [
+            "ColorAnimaDesignStudioTokenManifest",
+            "ColorAnimaDesignStudioExtractorCore",
+        ],
         path: "Sources/ColorAnimaDesignStudioTokenManifestExtractor"
     ),
     .target(
         name: "ColorAnimaDesignStudioWriteBack",
         dependencies: [
             "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioTokenManifestExtractor",
+            "ColorAnimaDesignStudioExtractorCore",
         ],
         path: "Sources/ColorAnimaDesignStudioWriteBack"
     ),
@@ -216,7 +226,7 @@ var targets: [Target] = [
         name: "ColorAnimaDesignStudioTokenManifestTests",
         dependencies: [
             "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioTokenManifestExtractor",
+            "ColorAnimaDesignStudioExtractorCore",
         ],
         path: "Tests/ColorAnimaDesignStudioTokenManifestTests"
     ),
@@ -225,7 +235,7 @@ var targets: [Target] = [
         dependencies: [
             "ColorAnimaDesignStudioWriteBack",
             "ColorAnimaDesignStudioTokenManifest",
-            "ColorAnimaDesignStudioTokenManifestExtractor",
+            "ColorAnimaDesignStudioExtractorCore",
         ],
         path: "Tests/ColorAnimaDesignStudioWriteBackTests"
     ),
