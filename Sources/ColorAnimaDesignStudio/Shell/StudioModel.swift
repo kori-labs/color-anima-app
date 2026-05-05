@@ -1,5 +1,12 @@
-import Observation
+import ColorAnimaDesignStudioIntegratedPreview
 import ColorAnimaDesignStudioTokenManifest
+import Observation
+
+/// Top-level sidebar sections.
+enum StudioSidebarSection: Hashable {
+    case tokenCategory(TokenCategory)
+    case integratedPreviews
+}
 
 /// Categories displayed in the studio sidebar.
 enum TokenCategory: String, CaseIterable, Identifiable {
@@ -26,6 +33,8 @@ final class StudioModel {
     // MARK: - UI state
 
     var selectedCategory: TokenCategory = .colors
+    var selectedSection: StudioSidebarSection = .tokenCategory(.colors)
+    var selectedIntegratedScreen: IntegratedPreviewScreen = .intake
     var isDirty: Bool = false
     var loadError: String?
 
