@@ -67,7 +67,7 @@ package enum ProjectTreeRowState {
 
         if node.kind == .project {
             if isDropTarget {
-                return WorkspaceChromeStyle.treeRowSelectedFill.opacity(0.9)
+                return WorkspaceChromeStyle.treeRowSelectedFill.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
             }
             if isSelected {
                 return WorkspaceChromeStyle.treeRowSelectedFill

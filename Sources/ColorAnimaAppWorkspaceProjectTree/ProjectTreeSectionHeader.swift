@@ -5,7 +5,7 @@ package struct ProjectTreeSectionHeader: View {
     let onCreateSequence: () -> Void
 
     package var body: some View {
-        HStack(alignment: .center, spacing: 8) {
+        HStack(alignment: .center, spacing: WorkspaceFoundation.Metrics.space2) {
             Text("Sequences")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(WorkspaceChromeStyle.Sidebar.secondaryLabel)

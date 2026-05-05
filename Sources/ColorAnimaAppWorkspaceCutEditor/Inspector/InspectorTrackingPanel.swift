@@ -23,7 +23,7 @@ package struct InspectorTrackingPanel: View {
 
     package var body: some View {
         if hasTrackingDetails || state.isTrackingAware {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 if let trackingStateSummary = state.trackingStateSummary {
                     Text(trackingStateSummary)
                         .font(.callout.weight(.semibold))
@@ -54,7 +54,7 @@ package struct InspectorTrackingPanel: View {
                     Toggle("Promote to anchor", isOn: $promoteToAnchor)
                         .font(.caption)
 
-                    HStack(spacing: 8) {
+                    HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                         Button("Accept") {
                             onAccept(promoteToAnchor)
                         }

@@ -36,8 +36,8 @@ package struct FrameStripCardView: View {
             Button {
                 onSelect(selectionModifiers)
             } label: {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
+                    HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                         Text(item.frameLabel)
                             .font(.caption2.weight(.semibold))
                             .monospacedDigit()
@@ -91,7 +91,7 @@ package struct FrameStripCardView: View {
             }
 
             if isHovered {
-                HStack(spacing: 4) {
+                HStack(spacing: WorkspaceFoundation.Metrics.space1) {
                     if item.isIncludedReference {
                         if item.isActiveReference == false {
                             referenceActionButton(
@@ -180,7 +180,7 @@ private extension FrameStripCardView {
         systemImage: String,
         title: String
     ) -> some View {
-        HStack(spacing: 5) {
+        HStack(spacing: WorkspaceFoundation.Metrics.microSpace1_25) {
             Image(systemName: systemImage)
                 .font(.caption2.weight(.semibold))
             Text(title)

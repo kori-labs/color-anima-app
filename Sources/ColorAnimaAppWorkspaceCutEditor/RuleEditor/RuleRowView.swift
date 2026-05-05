@@ -44,11 +44,11 @@ package struct RuleRowView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            RoundedRectangle(cornerRadius: 4)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                 .fill(rule.color.swiftUIColor)
                 .frame(width: 20, height: 20)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 4)
+                    RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                         .strokeBorder(.separator, lineWidth: 1)
                 )
                 .scaleEffect(isSwatchHovered ? 1.15 : 1.0)

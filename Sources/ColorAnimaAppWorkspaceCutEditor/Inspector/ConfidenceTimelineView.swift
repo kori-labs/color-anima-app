@@ -57,7 +57,7 @@ package struct ConfidenceTimelineView: View {
     }
 
     private var frameList: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             ForEach(filteredRows) { row in
                 ConfidenceFrameRowView(
                     row: row,
@@ -123,11 +123,11 @@ private struct ConfidenceFrameRowView: View {
         .padding(.vertical, WorkspaceFoundation.Metrics.microSpace1_75)
         .background(
             isSelected || isHovered
-                ? Color.accentColor.opacity(isSelected ? 0.15 : 0.07)
+                ? Color.accentColor.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity)
                 : Color.clear,
-            in: RoundedRectangle(cornerRadius: 8)
+            in: RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius)
         )
-        .contentShape(.rect(cornerRadius: 8))
+        .contentShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius))
         .onHover { hovering in
             isHovered = hovering
         }
@@ -144,10 +144,10 @@ private struct ConfidenceBarView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 3)
+                RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                     .fill(WorkspaceFoundation.Surface.tagFill)
 
-                RoundedRectangle(cornerRadius: 3)
+                RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                     .fill(barColor)
                     .frame(width: geo.size.width * max(0.0, min(1.0, value)))
             }
@@ -180,10 +180,10 @@ package struct ReviewStateBadgeView: View {
             .foregroundStyle(foregroundColor)
             .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
             .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_75)
-            .background(backgroundColor.opacity(0.18), in: Capsule())
+            .background(backgroundColor.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity), in: Capsule())
             .overlay {
                 Capsule()
-                    .strokeBorder(foregroundColor.opacity(0.4), lineWidth: 0.5)
+                    .strokeBorder(foregroundColor.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), lineWidth: 0.5)
             }
     }
 

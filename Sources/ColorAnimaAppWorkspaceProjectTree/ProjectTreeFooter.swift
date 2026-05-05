@@ -69,7 +69,7 @@ private struct ExperimentalCreateFooterSlot: View {
             Spacer(minLength: 0)
         }
         .padding(.vertical, WorkspaceFoundation.Metrics.microSpace0_5)
-        .opacity(actions.isEnabled ? 1 : 0.55)
+        .opacity(actions.isEnabled ? 1 : WorkspaceFoundation.Metrics.dimSelectionOpacity)
     }
 }
 
@@ -154,7 +154,7 @@ private struct ExperimentalConcentricCreateButton: View {
         case .outer:
             return WorkspaceChromeStyle.Sidebar.interactiveHoverFill
         case .inner:
-            return WorkspaceChromeStyle.Sidebar.interactiveHoverFill.opacity(0.45)
+            return WorkspaceChromeStyle.Sidebar.interactiveHoverFill.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
         case nil:
             return WorkspaceChromeStyle.Sidebar.concentricCreateOuterRestFill
         }
@@ -165,7 +165,7 @@ private struct ExperimentalConcentricCreateButton: View {
         case .inner:
             return WorkspaceChromeStyle.Sidebar.interactivePressedFill
         case .outer:
-            return WorkspaceChromeStyle.Sidebar.interactiveHoverFill.opacity(0.65)
+            return WorkspaceChromeStyle.Sidebar.interactiveHoverFill.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
         case nil:
             return WorkspaceChromeStyle.Sidebar.concentricCreateInnerRestFill
         }
@@ -176,7 +176,7 @@ private struct ExperimentalConcentricCreateButton: View {
         case .outer:
             return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke
         case .inner:
-            return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke.opacity(0.85)
+            return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
         case nil:
             return WorkspaceChromeStyle.Sidebar.interactiveIdleStroke
         }
@@ -187,7 +187,7 @@ private struct ExperimentalConcentricCreateButton: View {
         case .inner:
             return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke
         case .outer:
-            return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke.opacity(0.8)
+            return WorkspaceChromeStyle.Sidebar.interactiveHoverStroke.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity)
         case nil:
             return WorkspaceChromeStyle.Sidebar.interactiveIdleStroke.opacity(1.15)
         }

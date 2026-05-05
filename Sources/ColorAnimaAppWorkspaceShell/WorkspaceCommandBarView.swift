@@ -67,7 +67,7 @@ package struct WorkspaceCommandBarView: View {
         let showsTrackingSummary = trackingCutSummaryLabel != nil && hasTrackingResults
 
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space3) {
                 Button("New Project", action: onNewProject)
                     .buttonStyle(.bordered)
 

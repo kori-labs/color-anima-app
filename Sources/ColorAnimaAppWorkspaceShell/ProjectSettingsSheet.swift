@@ -37,8 +37,8 @@ package struct ProjectSettingsSheet: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
                 Text(isRequired ? "Set Project Settings" : "Project Settings")
                     .font(.title2.bold())
                 Text(descriptionText)
@@ -47,12 +47,12 @@ package struct ProjectSettingsSheet: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: 16) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space4) {
                 settingField(title: "Width", text: $draft.widthText, field: .width)
                 settingField(title: "Height", text: $draft.heightText, field: .height)
             }
 
-            HStack(spacing: 16) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space4) {
                 settingField(title: "FPS", text: $draft.fpsText, field: .fps)
                 Spacer(minLength: 0)
             }
@@ -102,7 +102,7 @@ package struct ProjectSettingsSheet: View {
     }
 
     private func settingField(title: String, text: Binding<String>, field: Field) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
             Text(title)
                 .font(.headline)
             TextField(title, text: text)

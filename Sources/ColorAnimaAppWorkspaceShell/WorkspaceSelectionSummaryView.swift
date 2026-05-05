@@ -24,8 +24,8 @@ package struct WorkspaceSelectionSummaryView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space4) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text(title)
                     .font(.largeTitle.bold())
                 Text(summaryMessage)
@@ -33,14 +33,14 @@ package struct WorkspaceSelectionSummaryView: View {
                     .foregroundStyle(.secondary)
             }
 
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
                 summaryCard(title: "Project", value: projectName, detail: "Root manifest and color system live here.")
                 summaryCard(title: "Sequence", value: sequenceName, detail: "Sequences group scenes under the project.")
                 summaryCard(title: "Scene", value: sceneName, detail: "Scenes group cuts inside the sequence.")
                 summaryCard(title: "Cut", value: cutName, detail: "Select a cut to open the editor, canvas, and inspector.")
             }
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2_5) {
                 Text("What happens next")
                     .font(.headline)
                 Text("When a cut is selected, the existing canvas and inspector flow appears on the right. Non-cut selections intentionally stay read-only.")
@@ -91,7 +91,7 @@ package struct WorkspaceSelectionSummaryView: View {
     }
 
     private func summaryCard(title: String, value: String, detail: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             Text(title)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)

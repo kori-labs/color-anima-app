@@ -31,10 +31,10 @@ package struct FrameStripInsertionSlot: View {
             .frame(width: width, height: 74)
             .overlay {
                 if isTargeted {
-                    RoundedRectangle(cornerRadius: 1.5, style: .continuous)
+                    RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius, style: .continuous)
                         .fill(WorkspaceChromeStyle.selectionStroke)
                         .frame(width: 3, height: 58)
-                        .shadow(color: WorkspaceChromeStyle.selectionStroke.opacity(0.18), radius: 2, y: 0)
+                        .shadow(color: WorkspaceChromeStyle.selectionStroke.opacity(WorkspaceFoundation.Metrics.badgeTintOpacity), radius: 2, y: 0)
                 }
             }
             .contentShape(.rect)

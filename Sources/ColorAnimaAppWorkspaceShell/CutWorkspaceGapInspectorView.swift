@@ -57,7 +57,7 @@ package struct CutWorkspaceGapInspectorView: View {
 
     @ViewBuilder
     private var evidenceBlock: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             Text("Suggested color")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -71,7 +71,7 @@ package struct CutWorkspaceGapInspectorView: View {
     }
 
     private var actionRow: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2) {
             Button("Apply Suggested", action: onApplySuggested)
                 .disabled(candidate.suggestedColor == nil)
             Button("Pick Color", action: onPickColor)
@@ -98,16 +98,16 @@ package struct CutWorkspaceGapInspectorView: View {
     @ViewBuilder
     private func swatch(for color: RGBAColor?) -> some View {
         if let color {
-            RoundedRectangle(cornerRadius: 4)
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
                 .fill(Color(red: color.red, green: color.green, blue: color.blue, opacity: color.alpha))
                 .frame(width: 28, height: 18)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(.secondary.opacity(0.5), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
+                        .stroke(.secondary.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), lineWidth: 0.5)
                 )
         } else {
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(.secondary.opacity(0.5), style: StrokeStyle(lineWidth: 0.5, dash: [3, 2]))
+            RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.microRadius)
+                .stroke(.secondary.opacity(WorkspaceFoundation.Metrics.dimSelectionOpacity), style: StrokeStyle(lineWidth: 0.5, dash: [3, 2]))
                 .frame(width: 28, height: 18)
         }
     }

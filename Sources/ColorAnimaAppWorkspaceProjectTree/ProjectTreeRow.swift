@@ -49,7 +49,7 @@ struct ProjectTreeRow: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
             HStack(spacing: 0) {
                 TreeConnectorGutter(
                     depth: depth,
@@ -122,7 +122,7 @@ struct ProjectTreeRow: View {
         HStack(spacing: WorkspaceFoundation.Metrics.space2_5) {
             leadingControl
 
-            VStack(alignment: .leading, spacing: 1) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.microSpace0_5) {
                 if isEditing {
                     InlineRenameField(
                         text: $editingNodeName,
@@ -218,7 +218,7 @@ struct ProjectTreeRow: View {
                     ChromeButtonStyle(
                         horizontalPadding: 0,
                         verticalPadding: 0,
-                        cornerRadius: 7
+                        cornerRadius: WorkspaceFoundation.Metrics.controlRadius
                     )
                 )
             } else {

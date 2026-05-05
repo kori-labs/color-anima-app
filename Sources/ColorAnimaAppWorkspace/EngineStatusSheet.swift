@@ -15,10 +15,9 @@ public struct EngineStatusSheet: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text(AppShellMetadata.displayName)
-                    .font(WorkspaceFoundation.Typography.displayCardTitle)
-                    .tracking(WorkspaceFoundation.Typography.displayCardTitleTracking)
+                    .geistDisplay(.cardTitle)
                 Text(AppShellMetadata.repositoryRole)
                     .font(WorkspaceFoundation.Typography.caption)
                     .foregroundStyle(.secondary)
@@ -54,7 +53,7 @@ public struct EngineStatusSheet: View {
 
             Divider()
 
-            Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: WorkspaceFoundation.Metrics.space2_5) {
+            Grid(alignment: .leading, horizontalSpacing: WorkspaceFoundation.Metrics.space4, verticalSpacing: WorkspaceFoundation.Metrics.space2_5) {
                 ForEach(state.operationalSurfaces, id: \.name) { surface in
                     GridRow {
                         Text(surface.name)

@@ -46,7 +46,7 @@ private extension WorkspaceStatusStrip {
                     .controlSize(.small)
             }
 
-            VStack(alignment: .leading, spacing: 1) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.microSpace0_5) {
                 Text(primary)
                     .font(WorkspaceFoundation.Typography.caption.weight(.medium))
                     .foregroundStyle(.primary)

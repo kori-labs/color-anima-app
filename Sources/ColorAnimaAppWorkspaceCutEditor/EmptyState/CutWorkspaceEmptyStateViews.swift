@@ -14,7 +14,7 @@ package struct EmptyCutWorkspacePlaceholderView: View {
     }
 
     package var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: WorkspaceFoundation.Metrics.space4) {
             CheckerboardPlaceholderSurface()
                 .aspectRatio(aspectRatio, contentMode: .fit)
                 .frame(maxWidth: 760)
@@ -110,7 +110,7 @@ private struct OnboardingStepCard: View {
     let subtitle: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
             Text(number)
                 .font(.caption.weight(.bold))
                 .foregroundStyle(WorkspaceChromeStyle.pipelineIndex)

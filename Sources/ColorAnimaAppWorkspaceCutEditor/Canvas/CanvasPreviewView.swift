@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -59,7 +60,7 @@ package struct CanvasPreviewView: View {
                 fittedRect: fittedRect,
                 dropTargetRegion: currentDropTarget(in: regions)
             )
-            .contentShape(.rect(cornerRadius: 18))
+            .contentShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius))
             .simultaneousGesture(canvasTapGesture(imageSize: imageSize, displayRect: displayRect))
             .simultaneousGesture(
                 canvasDragGesture(
@@ -94,7 +95,7 @@ package struct CanvasPreviewView: View {
                 }
             }
         }
-        .clipShape(.rect(cornerRadius: 18))
+        .clipShape(.rect(cornerRadius: WorkspaceFoundation.Metrics.frameCardCornerRadius))
     }
 
     private func currentDropTarget(in regions: [CanvasSelectionRegion]) -> CanvasSelectionRegion? {

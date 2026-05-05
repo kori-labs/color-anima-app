@@ -17,7 +17,7 @@ package struct SubsetStatusRow: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space2) {
             if isEditing {
                 InlineRenameField(
                     text: $draftStatusName,
@@ -61,7 +61,7 @@ package struct SubsetStatusRow: View {
     }
 
     private var actionButtons: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: WorkspaceFoundation.Metrics.space2) {
             Button(action: onStartRename) {
                 Image(systemName: "pencil")
                     .font(.caption.weight(.semibold))
@@ -92,9 +92,9 @@ package struct SubsetStatusRow: View {
 
     private var actionButtonStyle: ChromeButtonStyle {
         ChromeButtonStyle(
-            horizontalPadding: 6,
-            verticalPadding: 5,
-            cornerRadius: 8,
+            horizontalPadding: WorkspaceFoundation.Metrics.compactControlPadding,
+            verticalPadding: WorkspaceFoundation.Metrics.microSpace1_25,
+            cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius,
             font: .caption.weight(.semibold),
             idleForegroundStyle: WorkspaceFoundation.Foreground.secondaryLabel,
             hoverForegroundStyle: WorkspaceFoundation.Foreground.primaryLabel

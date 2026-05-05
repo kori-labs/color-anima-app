@@ -43,7 +43,7 @@ package struct WorkspaceSubsetDragPreview: View {
                 .foregroundStyle(WorkspaceFoundation.Foreground.primaryLabel)
                 .lineLimit(1)
 
-            HStack(spacing: 8) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space2) {
                 ForEach(Array(model.colors.enumerated()), id: \.offset) { _, color in
                     Circle()
                         .fill(color.swiftUIColor)

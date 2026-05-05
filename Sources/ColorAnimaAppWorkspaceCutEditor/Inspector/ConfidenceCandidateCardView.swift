@@ -45,8 +45,8 @@ private struct CandidateRegionEntryView: View {
     let regionRow: RegionConfidenceRow
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack(spacing: 6) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.microSpace1_25) {
+            HStack(spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text(regionRow.regionDisplayName)
                     .font(.subheadline.weight(.medium))
                     .lineLimit(1)
@@ -64,7 +64,7 @@ private struct CandidateRegionEntryView: View {
             }
         }
         .padding(WorkspaceFoundation.Metrics.space2_5)
-        .background(WorkspaceFoundation.Surface.cardFill, in: RoundedRectangle(cornerRadius: 8))
+        .background(WorkspaceFoundation.Surface.cardFill, in: RoundedRectangle(cornerRadius: WorkspaceFoundation.Metrics.compactControlCornerRadius))
     }
 
     private var confidenceLabel: String {
@@ -89,7 +89,7 @@ private struct CandidateRegionEntryView: View {
 
     private var reasonTagRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 4) {
+            HStack(spacing: WorkspaceFoundation.Metrics.space1) {
                 ForEach(reasonCodes, id: \.self) { code in
                     ReasonCodeTag(code: code)
                 }

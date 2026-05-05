@@ -12,10 +12,9 @@ package struct IntakeChrome<Content: View>: View {
 
     package var body: some View {
         VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space5) {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.compactControlPadding) {
                 Text(AppShellMetadata.displayName)
-                    // TODO: design-system Phase 0 follow-up — no display-size token yet (30pt semibold)
-                    .font(.system(size: 30, weight: .semibold))
+                    .geistDisplay(.section)
                 Text(AppShellMetadata.repositoryRole)
                     .font(WorkspaceFoundation.Typography.secondaryLabel)
                     .foregroundStyle(.secondary)

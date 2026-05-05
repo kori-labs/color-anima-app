@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct RenderSettingsView: View {
@@ -11,7 +12,7 @@ package struct RenderSettingsView: View {
     }
 
     package var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space3) {
             Picker("Format", selection: Binding(
                 get: { settings.outputFormat },
                 set: { newValue in
@@ -26,7 +27,7 @@ package struct RenderSettingsView: View {
             }
             .pickerStyle(.menu)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: WorkspaceFoundation.Metrics.space1) {
                 Text("Quality")
                     .font(.caption)
                     .foregroundStyle(.secondary)
