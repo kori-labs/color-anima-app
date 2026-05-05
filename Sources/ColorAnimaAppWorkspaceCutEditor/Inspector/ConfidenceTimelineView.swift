@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct ConfidenceTimelineView: View {
@@ -72,7 +73,7 @@ package struct ConfidenceTimelineView: View {
             .font(.caption)
             .foregroundStyle(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 4)
+            .padding(.vertical, WorkspaceFoundation.Metrics.space1)
     }
 
     private var filteredRows: [FrameConfidenceRow] {
@@ -118,8 +119,9 @@ private struct ConfidenceFrameRowView: View {
 
             ReviewStateBadgeView(state: row.reviewState)
         }
+        // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
         .padding(.horizontal, 10)
-        .padding(.vertical, 7)
+        .padding(.vertical, 7) // TODO: off-grid(7); no token match
         .background(
             isSelected || isHovered
                 ? Color.accentColor.opacity(isSelected ? 0.15 : 0.07)
@@ -177,8 +179,8 @@ package struct ReviewStateBadgeView: View {
         Text(label)
             .font(.caption2.weight(.semibold))
             .foregroundStyle(foregroundColor)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 3)
+            .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
+            .padding(.vertical, 3) // TODO: off-grid(3); no token match
             .background(backgroundColor.opacity(0.18), in: Capsule())
             .overlay {
                 Capsule()

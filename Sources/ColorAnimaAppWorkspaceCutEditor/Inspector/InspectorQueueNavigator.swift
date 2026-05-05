@@ -1,4 +1,5 @@
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceDesignSystem
 import SwiftUI
 
 package struct InspectorQueueNavigator: View {
@@ -63,8 +64,8 @@ package struct InspectorQueueNavigator: View {
                     ForEach(reasonBadges(for: currentItem), id: \.self) { reasonBadge in
                         Text(reasonBadge)
                             .font(.caption2.weight(.semibold))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
+                            .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
+                            .padding(.vertical, 3) // TODO: off-grid(3); no token match
                             .background(severityColor.opacity(0.12))
                             .foregroundStyle(severityColor)
                             .clipShape(.capsule)
@@ -73,8 +74,8 @@ package struct InspectorQueueNavigator: View {
                     if currentItem.isManualOverride {
                         Text("Manual")
                             .font(.caption2.weight(.semibold))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
+                            .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
+                            .padding(.vertical, 3) // TODO: off-grid(3); no token match
                             .background(Color.secondary.opacity(0.12))
                             .foregroundStyle(.secondary)
                             .clipShape(.capsule)

@@ -59,6 +59,7 @@ package struct FrameStripCardView: View {
                         Spacer(minLength: 0)
                     }
                 }
+                // TODO(design-system): off-grid 10pt padding; consider Metrics.space2_5=10 in a Phase 0 follow-up.
                 .padding(10)
                 .frame(width: 148, alignment: .leading)
                 .frame(height: 84, alignment: .topLeading)
@@ -85,8 +86,8 @@ package struct FrameStripCardView: View {
 
             if item.showsPersistentReferenceAction {
                 persistentReferenceActionButton
-                    .padding(.horizontal, 10)
-                    .padding(.bottom, 10)
+                    .padding(.horizontal, 10) // TODO: off-grid(10); snap to space2(8) or space3(12) in follow-up
+                    .padding(.bottom, 10) // TODO: off-grid(10)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
 
@@ -107,7 +108,7 @@ package struct FrameStripCardView: View {
                         )
                     }
                 }
-                .padding(8)
+                .padding(WorkspaceFoundation.Metrics.space2)
             }
         }
         .frame(width: 148, height: 84, alignment: .topLeading)
@@ -129,8 +130,8 @@ private extension FrameStripCardView {
     func frameStatusBadge(_ title: String, tint: Color) -> some View {
         Text(title)
             .font(.caption2.weight(.semibold))
-            .padding(.horizontal, 6)
-            .padding(.vertical, 3)
+            .padding(.horizontal, WorkspaceFoundation.Metrics.compactControlPadding)
+            .padding(.vertical, 3) // TODO: off-grid(3); no token match
             .background(tint.opacity(0.12))
             .foregroundStyle(tint)
             .clipShape(.capsule)
@@ -146,7 +147,7 @@ private extension FrameStripCardView {
         Button(action: action) {
             Image(systemName: systemImage)
                 .font(.caption.weight(.semibold))
-                .padding(6)
+                .padding(WorkspaceFoundation.Metrics.compactControlPadding)
         }
         .buttonStyle(
             ChromeButtonStyle(
@@ -187,8 +188,8 @@ private extension FrameStripCardView {
                 .font(.caption2.weight(.semibold))
                 .lineLimit(1)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 5)
+        .padding(.horizontal, WorkspaceFoundation.Metrics.space2)
+        .padding(.vertical, 5) // TODO: off-grid(5); no token match
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             Capsule()

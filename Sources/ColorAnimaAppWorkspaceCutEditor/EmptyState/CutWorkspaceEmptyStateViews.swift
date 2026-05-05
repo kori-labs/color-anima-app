@@ -67,7 +67,7 @@ package struct CutWorkspaceOnboardingSheet: View {
                 .keyboardShortcut(.defaultAction)
             }
         }
-        .padding(24)
+        .padding(WorkspaceFoundation.Metrics.space6)
         .frame(minWidth: 860, minHeight: 320)
         .background(WorkspaceChromeStyle.cardFill)
     }
@@ -121,7 +121,7 @@ private struct OnboardingStepCard: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+        .padding(WorkspaceFoundation.Metrics.space3)
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             RoundedRectangle(cornerRadius: 14)

@@ -44,7 +44,7 @@ extension CanvasPreviewView {
                     resetViewport()
                 }
             )
-            .padding(14)
+            .padding(14) // TODO: off-grid; snap to space3(12) or space4(16) in follow-up
         }
     }
 }

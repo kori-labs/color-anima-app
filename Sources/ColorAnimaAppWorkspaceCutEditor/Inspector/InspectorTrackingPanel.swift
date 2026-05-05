@@ -48,7 +48,7 @@ package struct InspectorTrackingPanel: View {
 
                 if state.isTrackingAware {
                     Divider()
-                        .padding(.vertical, 2)
+                        .padding(.vertical, 2) // TODO: off-grid(2); no token match
 
                     Toggle("Promote to anchor", isOn: $promoteToAnchor)
                         .font(.caption)
