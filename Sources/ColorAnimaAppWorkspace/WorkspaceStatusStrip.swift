@@ -58,7 +58,7 @@ private extension WorkspaceStatusStrip {
             }
         }
         .padding(.horizontal, WorkspaceFoundation.Metrics.space3)
-        .padding(.vertical, 6) // TODO: off-grid (6pt); no nearby Metrics token — snap to space1=4 or space2=8 after visual review
+        .padding(.vertical, WorkspaceFoundation.Metrics.compactControlPadding)
         .background(WorkspaceChromeStyle.badgeFill)
         .overlay {
             Capsule()
