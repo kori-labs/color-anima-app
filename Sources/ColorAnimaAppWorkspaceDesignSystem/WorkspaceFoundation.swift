@@ -19,8 +19,8 @@ package enum WorkspaceFoundation {
 
         package static var surfaceFill: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor(calibratedRed: 0.90, green: 0.95, blue: 0.98, alpha: 0.62),
-                dark: NSColor(calibratedRed: 0.14, green: 0.16, blue: 0.20, alpha: 0.62)
+                light: NSColor(calibratedRed: 0.90, green: 0.95, blue: 0.98, alpha: 1),
+                dark: NSColor(calibratedRed: 0.14, green: 0.16, blue: 0.20, alpha: 1)
             )
         }
 
@@ -32,18 +32,18 @@ package enum WorkspaceFoundation {
             )
         }
 
-        /// Floating overlay surface (panels, popovers) — slightly elevated, translucent.
+        /// Floating overlay surface (panels, popovers) — opaque.
         package static var overlay: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor.white.withAlphaComponent(0.9),
-                dark: NSColor(calibratedWhite: 0.08, alpha: 0.8)
+                light: NSColor.white,
+                dark: NSColor(calibratedWhite: 0.08, alpha: 1)
             )
         }
 
-        /// Raised card or panel surface — one step above canvas.
+        /// Raised card or panel surface — one step above canvas, opaque.
         package static var raised: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor(calibratedWhite: 1, alpha: 0.88),
+                light: NSColor(calibratedWhite: 1, alpha: 1),
                 dark: NSColor(calibratedWhite: 0.14, alpha: 1)
             )
         }
