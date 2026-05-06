@@ -19,8 +19,8 @@ package enum WorkspaceFoundation {
 
         package static var surfaceFill: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor(calibratedRed: 0.90, green: 0.95, blue: 0.98, alpha: 0.62),
-                dark: NSColor(calibratedRed: 0.14, green: 0.16, blue: 0.20, alpha: 0.62)
+                light: NSColor(calibratedRed: 0.90, green: 0.95, blue: 0.98, alpha: 1),
+                dark: NSColor(calibratedRed: 0.14, green: 0.16, blue: 0.20, alpha: 1)
             )
         }
 
@@ -32,18 +32,18 @@ package enum WorkspaceFoundation {
             )
         }
 
-        /// Floating overlay surface (panels, popovers) — slightly elevated, translucent.
+        /// Floating overlay surface (panels, popovers) — opaque.
         package static var overlay: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor.white.withAlphaComponent(0.9),
-                dark: NSColor(calibratedWhite: 0.08, alpha: 0.8)
+                light: NSColor.white,
+                dark: NSColor(calibratedWhite: 0.08, alpha: 1)
             )
         }
 
-        /// Raised card or panel surface — one step above canvas.
+        /// Raised card or panel surface — one step above canvas, opaque.
         package static var raised: Color {
             WorkspaceFoundation.dynamicColor(
-                light: NSColor(calibratedWhite: 1, alpha: 0.88),
+                light: NSColor(calibratedWhite: 1, alpha: 1),
                 dark: NSColor(calibratedWhite: 0.14, alpha: 1)
             )
         }
@@ -244,13 +244,17 @@ package enum WorkspaceFoundation {
         // Geist-scale display tier. Apply Font + matching tracking together,
         // e.g. `.font(Typography.displayHero).tracking(Typography.displayHeroTracking)`.
         // Tracking values are points (≈ Vercel's px at default macOS density).
-        package static let displayHero: Font = .system(size: 48, weight: .semibold)
+        // Geist fonts ship in the .app via `ATSApplicationFontsPath` (see
+        // `scripts/build-macos-app.sh`). When the PostScript name is not
+        // registered (CI without `.local-fonts/`), SwiftUI `.custom` falls
+        // back silently to the system font.
+        package static let displayHero: Font = .custom("Geist-SemiBold", size: 48)
         package static let displayHeroTracking: CGFloat = -2.4
 
-        package static let displaySection: Font = .system(size: 32, weight: .semibold)
+        package static let displaySection: Font = .custom("Geist-SemiBold", size: 32)
         package static let displaySectionTracking: CGFloat = -1.28
 
-        package static let displayCardTitle: Font = .system(size: 24, weight: .semibold)
+        package static let displayCardTitle: Font = .custom("Geist-SemiBold", size: 24)
         package static let displayCardTitleTracking: CGFloat = -0.96
     }
 
