@@ -1,5 +1,6 @@
 import ColorAnimaAppEngine
 import ColorAnimaAppWorkspaceApplication
+import ColorAnimaAppWorkspaceCutEditor
 import ColorAnimaAppWorkspaceDesignSystem
 import ColorAnimaAppWorkspaceProjectTree
 import ColorAnimaAppWorkspaceShell
@@ -54,17 +55,31 @@ public struct WorkspaceShellView: View {
                 )
                 .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 360)
             } detail: {
-                WorkspaceSelectionSummaryView(
-                    selectedNode: selectedNode,
-                    projectName: name(for: .project),
-                    sequenceName: name(for: .sequence),
-                    sceneName: name(for: .scene),
-                    cutName: name(for: .cut)
-                )
+                cutDetailContent
             }
         }
         .frame(minWidth: 960, minHeight: 640)
         .background(WorkspaceFoundation.Surface.surfaceFill)
+    }
+
+    @ViewBuilder
+    private var cutDetailContent: some View {
+        if selectedNode?.kind == .cut {
+            EmptyCutWorkspacePlaceholderView(resolution: cutDetailFallbackResolution)
+                .padding(WorkspaceFoundation.Metrics.space5)
+        } else {
+            WorkspaceSelectionSummaryView(
+                selectedNode: selectedNode,
+                projectName: name(for: .project),
+                sequenceName: name(for: .sequence),
+                sceneName: name(for: .scene),
+                cutName: name(for: .cut)
+            )
+        }
+    }
+
+    private var cutDetailFallbackResolution: ProjectCanvasResolution {
+        ProjectCanvasResolution(width: 1920, height: 1080)
     }
 
     private var selectedNode: WorkspaceProjectTreeNode? {
