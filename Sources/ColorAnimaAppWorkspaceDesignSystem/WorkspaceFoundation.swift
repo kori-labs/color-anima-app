@@ -244,13 +244,17 @@ package enum WorkspaceFoundation {
         // Geist-scale display tier. Apply Font + matching tracking together,
         // e.g. `.font(Typography.displayHero).tracking(Typography.displayHeroTracking)`.
         // Tracking values are points (≈ Vercel's px at default macOS density).
-        package static let displayHero: Font = .system(size: 48, weight: .semibold)
+        // Geist fonts ship in the .app via `ATSApplicationFontsPath` (see
+        // `scripts/build-macos-app.sh`). When the PostScript name is not
+        // registered (CI without `.local-fonts/`), SwiftUI `.custom` falls
+        // back silently to the system font.
+        package static let displayHero: Font = .custom("Geist-SemiBold", size: 48)
         package static let displayHeroTracking: CGFloat = -2.4
 
-        package static let displaySection: Font = .system(size: 32, weight: .semibold)
+        package static let displaySection: Font = .custom("Geist-SemiBold", size: 32)
         package static let displaySectionTracking: CGFloat = -1.28
 
-        package static let displayCardTitle: Font = .system(size: 24, weight: .semibold)
+        package static let displayCardTitle: Font = .custom("Geist-SemiBold", size: 24)
         package static let displayCardTitleTracking: CGFloat = -0.96
     }
 

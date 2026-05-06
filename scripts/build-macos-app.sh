@@ -222,6 +222,32 @@ copy_runtime_dylibs() {
     done <<< "$linked_dylibs"
 }
 
+copy_local_fonts_if_present() {
+    local fonts_src="$REPO_ROOT/.local-fonts/Geist/static"
+    if [[ ! -d "$fonts_src" ]]; then
+        BUNDLE_HAS_FONTS=false
+        return 0
+    fi
+
+    local fonts_dst="$RESOURCES_DIR/Fonts"
+    mkdir -p -- "$fonts_dst"
+
+    local copied=0
+    shopt -s nullglob
+    for f in "$fonts_src"/*.ttf "$fonts_src"/*.otf; do
+        cp "$f" "$fonts_dst/"
+        copied=$((copied + 1))
+    done
+    shopt -u nullglob
+
+    if [[ $copied -gt 0 ]]; then
+        log_info "Copied $copied font file(s) into Resources/Fonts"
+        BUNDLE_HAS_FONTS=true
+    else
+        BUNDLE_HAS_FONTS=false
+    fi
+}
+
 copy_icon_if_present() {
     if [[ -z "$ICON_PATH" ]]; then
         ICON_BASENAME=""
@@ -240,6 +266,12 @@ write_info_plist() {
     if [[ -n "${ICON_BASENAME:-}" ]]; then
         icon_block="    <key>CFBundleIconFile</key>
     <string>$ICON_BASENAME</string>"
+    fi
+
+    local fonts_block=""
+    if [[ "${BUNDLE_HAS_FONTS:-false}" == true ]]; then
+        fonts_block="    <key>ATSApplicationFontsPath</key>
+    <string>Fonts</string>"
     fi
 
     cat > "$INFO_PLIST_PATH" <<EOF
@@ -270,6 +302,7 @@ write_info_plist() {
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
 $icon_block
+$fonts_block
 </dict>
 </plist>
 EOF
@@ -303,6 +336,7 @@ main() {
     resolve_binary_path
     create_bundle_layout
     copy_icon_if_present
+    copy_local_fonts_if_present
     copy_executable
     copy_runtime_dylibs
     write_info_plist
