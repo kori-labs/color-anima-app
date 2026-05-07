@@ -3,8 +3,6 @@ import SwiftUI
 
 package enum WorkspaceFoundation {
     package enum Surface {
-        package static let material: Material = .ultraThinMaterial
-
         /// Very faint tint for section or summary backgrounds (replaces `Color.secondary.opacity(0.06)`).
         package static var sectionBackground: Color { Color.secondary.opacity(0.06) }
 

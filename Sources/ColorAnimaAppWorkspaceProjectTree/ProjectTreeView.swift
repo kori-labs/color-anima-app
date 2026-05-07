@@ -102,13 +102,9 @@ package struct ProjectTreeView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background {
-            ZStack {
-                Rectangle()
-                    .fill(WorkspaceFoundation.Surface.material)
-                Rectangle()
-                    .fill(WorkspaceFoundation.Surface.surfaceFill)
-            }
-            .ignoresSafeArea()
+            Rectangle()
+                .fill(WorkspaceFoundation.Surface.surfaceFill)
+                .ignoresSafeArea()
         }
         .overlay(alignment: .trailing) {
             Rectangle()

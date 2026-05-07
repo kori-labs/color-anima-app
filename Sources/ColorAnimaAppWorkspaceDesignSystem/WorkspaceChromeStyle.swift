@@ -3,8 +3,6 @@ import SwiftUI
 
 package enum WorkspaceChromeStyle {
     package enum Sidebar {
-        package static let material: Material = WorkspaceFoundation.Surface.material
-
         package static var primaryLabel: Color {
             WorkspaceFoundation.Foreground.primaryLabel
         }
@@ -23,7 +21,7 @@ package enum WorkspaceChromeStyle {
 
         package static var panelCardFill: Color {
             WorkspaceChromeAppearance.dynamicColor(
-                light: NSColor.white.withAlphaComponent(0.6),
+                light: NSColor(calibratedWhite: 1, alpha: 1),
                 dark: NSColor(calibratedWhite: 0.12, alpha: 1)
             )
         }
@@ -231,8 +229,8 @@ package enum WorkspaceChromeStyle {
 
     package static var overlayPanelFill: Color {
         WorkspaceChromeAppearance.dynamicColor(
-            light: NSColor.white.withAlphaComponent(0.9),
-            dark: NSColor(calibratedWhite: 0.08, alpha: 0.8)
+            light: NSColor(calibratedWhite: 1, alpha: 1),
+            dark: NSColor(calibratedWhite: 0.08, alpha: 1)
         )
     }
 
