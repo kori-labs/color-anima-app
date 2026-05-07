@@ -75,21 +75,17 @@ public struct WorkspaceShellView: View {
     @ViewBuilder
     private var detailView: some View {
         if host.selectedNode?.kind == .cut {
-            // Wave 4: replace placeholder leaves with real Canvas and Inspector composers.
             WorkspaceDetailSplitView(
                 inspectorWidth: $inspectorWidth,
                 minimumLeadingWidth: 720,
                 inspectorWidthRange: 340 ... 420,
                 dividerColor: WorkspaceChromeStyle.workspacePanelDivider
             ) {
-                EmptyCutWorkspacePlaceholderView(resolution: host.projectCanvasResolution)
+                CutWorkspaceCanvasView(model: host)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             } trailing: {
-                Text("Inspector — TODO Wave 4")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+                CutWorkspaceInspectorView(model: host)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding(WorkspaceFoundation.Metrics.space5)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         } else {

@@ -214,6 +214,10 @@ final class WorkspaceHostModel {
         })
     }
 
+    var frameStripItemIDs: [UUID] {
+        Self.trackingFrames.map(\.frameID)
+    }
+
     var selectedFrameIDs: Set<UUID> {
         [Self.trackingFrames[0].frameID]
     }
@@ -402,6 +406,14 @@ final class WorkspaceHostModel {
         guard let activeCutID else { return }
         _ = ProjectSessionCoordinator.makeExportRequest(for: activeCutID, in: session)
     }
+
+    func importAssetSequence(_: CutAssetKind, artworks _: [ImportedArtwork]) throws {}
+
+    func importUnifiedLayers(from _: URL) throws {}
+
+    func importUnifiedLayerSequence(from _: [URL]) throws {}
+
+    func importTriSequence(_: TriSequenceImportPlan) throws {}
 
     // MARK: - Engine-facing actions
 
